@@ -1,3 +1,66 @@
 \section*{Problem 1}
 
-This is the first problem.
+In this problem, we are asked to do out the N-queens problem by hand with N=9.
+\\
+\\
+Below is a table containing our solution. 
+
+For each queen we have assigned a color as follows:
+
+\begin{figure}[hb]
+
+\centering
+
+\begin{minipage}{0.4\textwidth}
+\centering
+\begin{description}
+	\setlength \itemsep{0.25pt}
+	\item [queen 1] --- \textcolor{red}{red} 
+	\item [queen 2] --- \textcolor{blue}{blue}
+	\item [queen 3] --- \textcolor{green}{green}
+	\item [queen 4] --- \textcolor{yellow}{yellow}
+	\item [queen 5] --- \textcolor{cyan}{cyan}
+	\item [queen 6] --- \textcolor{teal}{teal}
+	\item [queen 7] --- \textcolor{magenta}{magenta}
+	\item [queen 8] --- \textcolor{olive}{olive}
+	\item [] 
+\end{description}	
+\end{minipage}
+\hfill
+\begin{minipage}{0.4\textwidth}
+\centering
+\begin{TAB}(e){|c|c|c|c|c|c|c|c|c|}{|c|c|c|c|c|c|c|c|c|}
+	$\cdot$ & $\cdot$ & \textcolor{red}{$\mathrm{Q}_1$} & $\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ \\
+	$\cdot$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{red}{\mathrm{x}_1}$ & $\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ & \textcolor{blue}{$\mathrm{Q}_2$} \\
+	$\textcolor{red}{\mathrm{x}_1}$ & \textcolor{green}{$\mathrm{Q}_3$} & $\textcolor{red}{\mathrm{x}_1}$ & $\cdot$ & $\textcolor{red}{\mathrm{x}_1}$ & $\cdot$ & $\cdot$ & $\textcolor{blue}{\mathrm{x}_2}$ & $\textcolor{blue}{\mathrm{x}_2}$ \\
+	$\textcolor{green}{\mathrm{x}_3}$ & $\textcolor{green}{\mathrm{x}_3}$ & $\textcolor{red}{\mathrm{x}_1}$ & $\cdot$ & $\cdot$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{blue}{\mathrm{x}_2}$ &  \textcolor{yellow}{$\mathrm{Q}_4$} & $\textcolor{blue}{\mathrm{x}_2}$ \\
+	\textcolor{cyan}{$\mathrm{Q}_5$} & $\textcolor{green}{\mathrm{x}_3}$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{green}{\mathrm{x}_3}$ & $\cdot$ & $\textcolor{blue}{\mathrm{x}_2}$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{yellow}{\mathrm{x}_4}$ & $\textcolor{blue}{\mathrm{x}_2}$ \\
+	$\textcolor{cyan}{\mathrm{x}_5}$ & $\textcolor{green}{\mathrm{x}_3}$ & $\textcolor{red}{\mathrm{x}_1}$ & \textcolor{teal}{$\mathrm{Q}_6$} & $\textcolor{blue}{\mathrm{x}_2}$ & $\textcolor{yellow}{\mathrm{x}_4}$ & $\cdot$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{blue}{\mathrm{x}_2}$ \\
+	$\textcolor{cyan}{\mathrm{x}_5}$ & $\textcolor{green}{\mathrm{x}_3}$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{blue}{\mathrm{x}_2}$ & $\textcolor{yellow}{\mathrm{x}_4}$ & $\textcolor{green}{\mathrm{x}_3}$ & \textcolor{magenta}{$\mathrm{Q}_7$} & $\textcolor{yellow}{\mathrm{x}_4}$ & $\textcolor{red}{\mathrm{x}_1}$ \\
+	$\textcolor{cyan}{\mathrm{x}_5}$ & $\textcolor{green}{\mathrm{x}_3}$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{yellow}{\mathrm{x}_4}$ & \textcolor{olive}{$\mathrm{Q}_8$} & $\textcolor{teal}{\mathrm{x}_6}$ & $\textcolor{green}{\mathrm{x}_3}$ & $\textcolor{yellow}{\mathrm{x}_4}$ & $\textcolor{blue}{\mathrm{x}_2}$ \\
+	$\textcolor{cyan}{\mathrm{x}_5}$ & $\textcolor{blue}{\mathrm{x}_2}$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{teal}{\mathrm{x}_6}$ & $\textcolor{cyan}{\mathrm{x}_5}$ & $\textcolor{olive}{\mathrm{x}_8}$ & $\textcolor{teal}{\mathrm{x}_6}$ & $\textcolor{green}{\mathrm{x}_3}$ & $\textcolor{blue}{\mathrm{x}_2}$ \\
+\end{TAB}
+\end{minipage}
+
+\end{figure}
+
+In the above table we demonstrate the use of the Monte Carlo approach to generate an estimate of the total cost to solve the N-queens problem with N=9. In the below table we give the row sums for 
+all of the options, and then the total sum which represents the overall cost to solve the problem:
+\\
+\\
+\begin{centering}
+\begin{tabular}{l | c | l}
+	\textbf{Row \#} & \textbf{Choices} & \textbf{Cost} \\
+	1 & 9 & 9 \\
+	2 & 6 & $9 \cdot 6$ \\
+	3 & 4 & $9 \cdot 6 \cdot 4$ \\
+	4 & 3 & $9 \cdot 6 \cdot 4 \cdot 3$ \\
+	5 & 2 & $9 \cdot 6 \cdot 4 \cdot 3 \cdot 2$ \\
+	6 & 2 & $9 \cdot 6 \cdot 4 \cdot 3 \cdot 2 \cdot 2$ \\
+	7 & 1 & $9 \cdot 6 \cdot 4 \cdot 3 \cdot 2 \cdot 2 \cdot 1$ \\
+	8 & 1 & $9 \cdot 6 \cdot 4 \cdot 3 \cdot 2 \cdot 2 \cdot 1 \cdot 1$ \\
+	9 & 0 & 0 \\
+	\hline
+	\textbf{Total} & & \textbf{9999}
+\end{tabular}
+\end{centering}
