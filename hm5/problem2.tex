@@ -1,0 +1,28 @@
+\section*{Problem 2}
+
+\begin{center}
+\begin{tikzpicture}[level/.style={sibling distance=100mm/#1}]
+\node [circle,draw] (a){$0$}
+  child {node [circle,draw, left=14mm, label = $4$] (b) {$4$}
+      child {node [circle,draw, left=14mm, label = $6$] (c) {$10$}  
+          child {node [circle,draw, left=14mm, label = $15$] (d) {$25$}
+            child {node [circle,draw, label = $17$] (f) {$42$}
+                child{node (1) {$X$}}
+            }
+            child {node [circle,draw, label = $0$] (g) {$25$}
+                child {node [circle,draw, label = $23$] (h) {$48$}
+                    child{node (1) {$X$}}
+                }
+                child{node (1) {$X$}}
+            }
+          }
+          child {node [circle,draw, right=14mm, label = $0$] (e) {$10$}
+              child {node [circle,draw, left=14mm, label = $17$] (i) {$27$}
+                  child {node [circle,draw, left=14mm, fill = lime, label = $23$] (j) {$50$}
+                  }
+              }
+          }
+      }
+  };
+\end{tikzpicture}
+\end{center}
