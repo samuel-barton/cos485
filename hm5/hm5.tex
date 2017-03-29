@@ -5,8 +5,13 @@
 \usepackage[thinlines]{easytable}
 \usepackage{graphicx}
 \usepackage{enumitem}
-\usepackage{tikz}
 \usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\tikzset{blue node/.style={circle,fill=blue!20,draw,minimum size=1cm,inner sep=0pt},}
+\tikzset{red node/.style={circle,fill=red!20,draw,minimum size=1cm,inner sep=0pt},}
+\tikzset{green node/.style={circle,fill=green!20,draw,minimum size=1cm,inner sep=0pt},}
 
 \title{COS 485 --- Homework 5}
 
@@ -20,4 +25,5 @@
 	\input{problem2}
 	\pagebreak
 	\input{problem3}
+	\input{problem4}
 \end{document}
