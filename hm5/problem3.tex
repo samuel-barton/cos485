@@ -1,0 +1,32 @@
+\section*{Problem 3}
+
+In this problem we explain a way the algorithm in Exercise 5.19 could be implemented.
+
+\begin{lstlisting}
+Let there be an array where we will store the colors we create
+
+Let there be an adjacency list for this graph
+
+Let there be a count of uncolored nodes
+
+for each node in the adjacency list
+    if the count of uncolored nodes is zero
+        stop
+    if the node has not been colored
+        pick a new color
+        add that color to the array of possible colors
+        color that index with the new color
+        decrement the count of uncolored nodes
+        for each node in the adjacency list
+            if this node is not adjacent to any nodes with the current color 
+                color this node
+                decrement the count of uncolored nodes
+\end{lstlisting}
+
+Using the above implementation, the algorithm would take the following amount of time for an arbitrary graph with N nodes.
+\\
+\\
+The outermost loop will iterate N times in the worst case, thus in the worst case we will have N colors. This would happen if we were handed a completely connected graph. Since we go through each node in the graph, and for each node we visit every other node in the graph, we have, based on experience, an $\mathrm{O(}N^2\mathrm{)}$ algorithm. 
+\\
+\\
+Since we wish for a more instructive analysis of this algorithm, we are going to analyze at a higher level of granularity. Thus, we may note that the number of times we go through the outer loop is dependent on the number of colors needed to completely color the graph. The number of colors needed is dependent on the level of connectedness in the graph. Thus, if it takes K colors to completely color the graph, then our algorithm is  $\mathrm{\Theta (N}\cdot K \mathrm{)}$. 

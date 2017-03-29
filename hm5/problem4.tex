@@ -1,0 +1,26 @@
+\section*{Problem 4}
+
+\begin{center}
+    \begin{tikzpicture}
+       \node[red node] (1) {$1$};
+       \node[green node] (2) [right = 2cm of 1]{$2$};
+       \node[red node] (3) [right = 2cm of 2]{$3$};
+       
+       \node[green node] (4) [below = 2cm of 1]{$4$};
+       \node[red node] (5) [right = 2cm of 4]{$5$};
+       \node[green node] (6) [right = 2cm of 5]{$6$};
+       
+       \node[blue node] (7) [below = 2cm of 4]{$7$};
+       \node[green node] (8) [right = 2cm of 7]{$8$};
+       \node[red node] (9) [right = 2cm of 8]{$9$};
+       
+       \draw
+       (1) -- (2) -- (3)
+       (1) -- (4) -- (7)
+       (2) -- (5) -- (8)
+       (3) -- (6) -- (9)
+       (4) -- (5) -- (6)
+(7) -- (8) -- (9)
+       (7) -- (5);
+    \end{tikzpicture}
+\end{center}
