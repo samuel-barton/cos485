@@ -1,0 +1,52 @@
+\section*{Problem 8}
+
+In this problem we are asked to construct a branch and bound algorithm to solve the ``sequence alignment'' problem from Section 3.7 of the text. In this problem, we have the following. We are trying to align two sequences to minimize the overall ``cost'' of the resulting aligned sequence pair. The ``cost'' is measured using the following metric: A mismatch between two elements in the aligned pair has a cost of 1, and a gap in the aligned sequence has a cost of 2.
+\\
+\\
+There are three possibilities for each pair we must align: we take an element from both sequences, take one from the top seqence and put a gap in the bottom sequence, or we put a gap in the top sequence and take an element from the bottom sequence. The three possibilities are shown below.
+
+\begin{center}
+	\begin{minipage}{0.3\textwidth}
+	\centering
+	\begin{tabular}{c}	
+		{\large \textbf{X}} \\
+		{\large \textbf{Y}} \\
+	\end{tabular}
+	\end{minipage}
+	\begin{minipage}{0.3\textwidth}
+		\centering
+	\begin{tabular}{c}
+		{\large \textbf{X}} \\
+		{\large \textbf{-}} \\
+	\end{tabular}
+	\end{minipage}
+	\begin{minipage}{0.3\textwidth}
+		\centering
+	\begin{tabular}{c}
+		{\large \textbf{-}} \\
+		{\large \textbf{Y}} \\
+	\end{tabular}
+	\end{minipage}
+\end{center}
+
+We do not consider the case of not taking an element from either sequence as it does not advance the solution. 
+The greedy solution is an initial bound. The greedy solution is defined as taking both sequences until one runs out and then inserting blanks until the longer sequence has been exhausted as well. 
+\\
+\\
+Our algorithm is as follows. For each pair we are to align, we consider the three possibilities and take the one with the least cost, keeping track of the total cost thus far as we go. If at any point we overstep the bound, then we backtrack to the previous pair and try the next lowest cost option until we run out of possibilities. As soon as we find a solution cheaper than the current bound, we update the bound with the cost of the new solution.
+\\
+\begin{center}
+	{\large \textbf{Analysis}}
+\end{center}
+
+The state space vector for our algorithm is the familiar set as seen in many other backtracking algorithms.
+$$
+	\{ C_1,\,C_2,\,...,C_n \}
+$$
+In this case, $n$ is the length of the longest sequence.
+\\
+\\
+Our algorithm has three possibilities per choice, and we are required to explore all possibilities. In the worst case we will have to explore the entire search tree as the bound will not eliminate any possibilities before we have reached leaf nodes. The search tree has $n$ levels and each non-leaf node has three children; thus there are $3^n$ nodes in the tree. Since we must visit each node we generate at least once, and in the worst case we must generate all of the nodes, we will have a total cost of
+$$
+	T_n \in \Theta \left(3^n \right)
+$$

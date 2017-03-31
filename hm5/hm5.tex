@@ -6,6 +6,7 @@
 \usepackage{graphicx}
 \usepackage{enumitem}
 \usepackage{listings}
+\usepackage{geometry}
 
 % Tikz stuff
 \usepackage{tikz}
@@ -19,6 +20,16 @@
 \tikzset{yellow node/.style={circle,fill=yellow!20,draw,minimum size=1cm,inner sep=0pt},}
 
 \tikzset{graph node/.style={circle,fill=orange!30,draw,minimum size=1cm,inner sep=0pt},}
+
+% Fancy code block wider than margins
+
+\makeatletter
+\newcommand*{\centerfloat}{%
+  \parindent \z@
+  \leftskip \z@ \@plus 1fil \@minus \textwidth
+  \rightskip\leftskip
+  \parfillskip \z@skip}
+\makeatother
 
 \title{COS 485 --- Homework 5}
 
@@ -37,5 +48,6 @@
 	\input{problem5}
 	\input{problem6}
 	\input{problem7}
+	\input{problem8}
 	\input{puzzle}
-\end{document}
+\end{document}1

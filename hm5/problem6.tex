@@ -1,0 +1,31 @@
+\section*{Problem 6}
+
+In this problem we are constructing a prototype which can be used to force the 3-Coloring Backtracking Algorithm to take exponential time to discover that it is not 3-Colorable.
+\\
+\\
+The idea is as follows: Construct a graph of $n$ nodes where $V_n$ and $V_{n-1}$ are connected to every other vertex, and $V_{n-2}$ is connected to $V_{n-3}$. This graph will take exponential time to solve. Below we provide an example with $n = 5$. This took approximately 125 operations to determine that it was not 3-colorable and so took $T_n = \frac{3^n}{2} \implies T_n \in \Theta \left(3^n\right)$.
+
+\begin{center}
+	\begin{tikzpicture}
+
+	\draw 
+	(0,0) coordinate (1) {}
+	(-2,-2) coordinate (2) {}
+	-- (-1,-4) coordinate (3) {}
+	-- (1,-4) coordinate (4) {}
+	-- (2,-2) coordinate (5) {};
+	\draw 
+	(1) -- (5)
+	(2) -- (5)
+	(3) -- (5)
+	(1) -- (4)
+	(2) -- (4);
+	\draw 
+	(0,0) coordinate (1) node [graph node] {$1$}
+	(-2,-2) coordinate (2) node [graph node] {$2$}
+	-- (-1,-4) coordinate (3) node [graph node] {$3$}
+	-- (1,-4) coordinate (4) node [graph node] {$4$}
+	-- (2,-2) coordinate (5) node [graph node] {$5$};
+	
+	\end{tikzpicture}
+\end{center}
