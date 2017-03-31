@@ -1,0 +1,543 @@
+\section*{Problem 7}
+
+In this problem we demonstrate, in great detail, the execution of the Hamiltonian Circuit algorithm on the graph below. On this graph we have denoted the path taken by the circuit. See the next page for the state-space tree for this circuit.
+
+\begin{center}
+    \begin{tikzpicture}
+       \node[graph node] (1) {$1$};
+       \node[graph node] (2) [right = 2cm of 1]{$2$};
+       \node[graph node] (3) [right = 2cm of 2]{$3$};
+       
+       \node[graph node] (4) [below = 2cm of 1]{$4$};
+       \node[graph node] (5) [right = 2cm of 4]{$5$};
+       \node[graph node] (6) [right = 2cm of 5]{$6$};
+       
+       \node[graph node] (7) [below = 2cm of 4]{$7$};
+       \node[graph node] (8) [right = 2cm of 7]{$8$};
+       \node[graph node] (9) [right = 2cm of 8]{$9$};
+       
+       \draw
+       (1) -- (2) -- (3)
+       (1) -- (4) -- (7)
+       (2) -- (5) -- (8)
+       (3) -- (6) -- (9)
+       (4) -- (5) -- (6)
+(7) -- (8) -- (9)
+       (7) -- (5);
+	   
+	   \draw [ultra thick,->,bend left=30] (1) to (2);
+	   \draw [ultra thick,->,bend left=30] (2) to (3);
+	   \draw [ultra thick,->,bend left=30] (3) to (6);
+	   \draw [ultra thick,->,bend left=30] (6) to (9);
+	   \draw [ultra thick,->,bend left=30] (9) to (8);
+	   \draw [ultra thick,->,bend right=30] (8) to (5);
+	   \draw [ultra thick,->,bend left=30] (5) to (7);
+	   \draw [ultra thick,->,bend left=30] (7) to (4);
+	   \draw [ultra thick,->,bend left=30] (4) to (1);	   	   	   	   	   	   
+    \end{tikzpicture}
+\end{center}
+
+\pagebreak
+
+\begin{center}
+	\vspace*{-4cm}\begin{tikzpicture}[font=\tiny]
+	\tikzset{grow'=right,level distance=25pt,sibling distance=-3pt}
+%	\tikzset{execute at begin node=\strut}
+	\tikzset{every tree node/.style={align=center,anchor=base west}}		
+
+\Tree 
+[.1 
+	[.2 
+		[.1 
+			x
+		] 
+		[.2 
+			x
+		]
+		[.3
+			[.1
+				x
+			]
+			[.2
+				x
+			]
+			[.4
+				x
+			]
+			[.5
+				x
+			]
+			[.6
+				[.1
+					x
+				]
+				[.2
+					x
+				]
+				[.3
+					x
+				]
+				[.4
+					x
+				]
+				[.5
+					[.1
+						x
+					]
+					[.2
+						x
+					]
+					[.3
+						x
+					]
+					[.4
+						[.1
+							x
+						]
+						[.2
+							x
+						]
+						[.3
+							x
+						]
+						[.5
+							x
+						]
+						[.6
+							x
+						]
+						[.7
+							[.1
+								x
+							]
+							[.2
+								x
+							]
+							[.3
+								x
+							]
+							[.4
+								x
+							]
+							[.5
+								x
+							]
+							[.6
+								x
+							]
+							[.8
+								[.1
+									x
+								]
+								[.2
+									x
+								]
+								[.3
+									x
+								]
+								[.4
+									x
+								]
+								[.5
+									x
+								]
+								[.6
+									x
+								]
+								[.7
+									x
+								]
+								[.9
+									x
+								]
+							]
+							[.9
+								x
+							]
+						]
+						[.8
+							x
+						]
+						[.9
+							x
+						]
+					]
+					[.6
+						x
+					]
+					[.7
+						[.1
+							x
+						]
+						[.2
+							x
+						]
+						[.3
+							x
+						]
+						[.4
+							[.1
+								x
+							]
+							[.2
+								x
+							]
+							[.3
+								x
+							]
+							[.5
+								x
+							]
+							[.6
+								x
+							]
+							[.7
+								x
+							]
+							[.8
+								x
+							]
+							[.9
+								x
+							]
+						]
+						[.5
+							x
+						]
+						[.6
+							x
+						]
+						[.8
+							[.1
+								x
+							]
+							[.2
+								x
+							]
+							[.3
+								x
+							]
+							[.4
+								x
+							]
+							[.5
+								x
+							]
+							[.6
+								x
+							]
+							[.7
+								x
+							]
+							[.9
+								x
+							]
+						]
+						[.9
+							x
+						]
+					]
+					[.8
+						[.1
+							x
+						]
+						[.2
+							x
+						]
+						[.3
+							x
+						]
+						[.4
+							x
+						]
+						[.5
+							x
+						]
+						[.6
+							x
+						]
+						[.7
+							[.1
+								x
+							]
+							[.2
+								x
+							]
+							[.3
+								x
+							]
+							[.4
+								[.1
+									x
+								]
+								[.2
+									x
+								]
+								[.3
+									x
+								]
+								[.5
+									x
+								]
+								[.6
+									x
+								]
+								[.7
+									x
+								]
+								[.8
+									x
+								]
+								[.9
+									x
+								]
+							]
+							[.5
+								x
+							]
+							[.6
+								x
+							]
+							[.8
+								x
+							]
+							[.9
+								x
+							]
+						]
+						[.9
+							[.1
+								x
+							]
+							[.2
+								x
+							]
+							[.3
+								x
+							]
+							[.4
+								x
+							]
+							[.5
+								x
+							]
+							[.6
+								x
+							]
+							[.7
+								x
+							]
+							[.8
+								x
+							]
+						]
+					]
+					[.9
+						x
+					]
+				]
+				[.7
+					x
+				]
+			    [.8
+					x
+				]
+			    [.\node(site){$9$}; ]
+			]
+		] 
+	] 
+]
+
+\begin{scope}[shift={(3.25in,0in)}]
+\Tree
+[.\node(root){$1$}; 
+	[.1
+		x
+	]
+	[.2
+		x
+	]
+	[.3
+		x
+	]
+	[.4
+		x
+	]
+	[.5
+		x
+	]
+	[.6
+		x
+	]
+	[.7
+		x
+	]
+	[.8
+		[.1
+			x
+		]
+		[.2
+			x
+		]
+		[.3
+			x
+		]
+		[.4
+			[.1
+				x
+			]
+			[.2
+				x
+			]
+			[.3
+				x
+			]
+			[.5
+				[.1
+					x
+				]
+				[.2
+					x
+				]
+				[.3
+					x
+				]
+				[.4
+					x
+				]
+				[.6
+					x
+				]
+				[.7
+					[.1
+						x
+					]
+					[.2
+						x
+					]
+					[.3
+						x
+					]
+					[.4
+						x
+					]
+					[.5
+						x
+					]
+					[.6
+						x
+					]
+					[.8
+						x
+					]
+					[.9
+						x
+					]
+				]
+				[.8
+					x
+				]
+				[.9
+					x
+				]
+			]
+			[.6
+				x
+			]
+			[.7
+				x
+			]
+			[.8
+				x
+			]
+			[.9
+				x
+			]
+		]
+		[.5
+			[.1
+				x
+			]
+			[.2
+				x
+			]
+			[.3
+				x
+			]
+			[.4
+				[.1
+					x
+				]
+				[.2
+					x
+				]
+				[.3
+					x
+				]
+				[.5
+					x
+				]
+				[.6
+					x
+				]
+				[.7
+					[.1
+						x
+					]
+					[.2
+						x
+					]
+					[.3
+						x
+					]
+					[.4
+						x
+					]
+					[.5
+						x
+					]
+					[.6
+						x
+					]
+					[.8
+						x
+					]
+					[.9
+						x
+					]
+				]
+				[.8
+					x
+				]
+				[.9
+					x
+				]
+			]
+			[.6
+				x
+			]
+			[.7
+				[.1
+					x
+				]
+				[.2
+					x
+				]
+				[.3
+					x
+				]
+				[.4
+					[.1
+						SUCCESS!
+					]
+				]
+			]
+		]
+	]
+]
+\end{scope}
+\draw[<-](\subtreeof{root}.133.2) ..
+controls +(west:2) and +(east:12)..(site);
+
+	\end{tikzpicture}
+\end{center}

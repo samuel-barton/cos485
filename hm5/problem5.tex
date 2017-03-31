@@ -1,0 +1,41 @@
+\section*{Problem 5}
+
+In this problem we demonstrate an arbitrary graph where the greedy algorithm will fail. To illustrate this we will show two colored graphs: one using the greedy algorithm to color the graph, and the other using the ``eyesight'' algorithm.
+
+\begin{center}
+    \begin{tikzpicture}
+       \node [red node] (1) {$1$};
+	   \node [blue node] (2) [right=2cm of 1]{$2$};
+	   \node [blue node] (3) [right=2cm of 2]{$3$};
+	   \node [green node] (4) [below=2cm of 1]{$4$};
+	   \node [green node] (5) [right=2cm of 4]{$5$};
+	   \node [yellow node] (6) [right=2cm of 5]{$6$};
+	   \draw
+	   (1) -- (2) -- (6)
+	   (1) -- (5) -- (3)
+	   (5) -- (6) -- (3)
+	   (1) -- (4) -- (2);
+	   \draw [bend right=30] (4) to (6);
+	   \draw [bend left=60] (4) to (3);
+    \end{tikzpicture}
+\end{center}
+
+The optimal solution
+
+\begin{center}
+    \begin{tikzpicture}
+       \node [red node] (1) {$1$};
+	   \node [green node] (2) [right=2cm of 1]{$2$};
+	   \node [green node] (3) [right=2cm of 2]{$3$};
+	   \node [blue node] (4) [below=2cm of 1]{$4$};
+	   \node [blue node] (5) [right=2cm of 4]{$5$};
+	   \node [red node] (6) [right=2cm of 5]{$6$};
+	   \draw
+	   (1) -- (2) -- (6)
+	   (1) -- (5) -- (3)
+	   (5) -- (6) -- (3)
+	   (1) -- (4) -- (2);
+	   \draw [bend right=30] (4) to (6);
+	   \draw [bend left=60] (4) to (3);
+    \end{tikzpicture}
+\end{center}
