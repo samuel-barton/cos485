@@ -1,6 +1,7 @@
 \documentclass[aip, jmp, amsmath,amssymb, reprint]{revtex4-1}
 \usepackage{amsfonts, amssymb, amsthm, pgfplots, array}
-\usepackage{amsmath, mathtools}
+\usepackage{longtable}
+\usepackage{amsmath, mathtools, listings}
 \usepackage{graphicx, tikz, }% Include figure files
 \usetikzlibrary{arrows, decorations.markings,shapes,arrows,fit}
 \tikzset{box/.style={draw, minimum size=2em, text width=20em, text centered},
@@ -88,7 +89,7 @@ By definition, $n \leq c\cdot n^2$. To find a working expression that conforms t
 Use a proof by contradiction. Let $c = \dfrac{1}{6}$. If $n \in o(5n)$, there must exist some $N$ such that, for $n \geq N$, $n \leq \dfrac{1}{6}5n$. This reduces to $1 \leq \dfrac{5}{6}$, which cannot be true.
 \end{exmp}
 \section{Divide and Conquer}
-\begin{tabular}{p{2cm} p{5cm} }
+\begin{longtable}{p{2cm} p{5cm} }
     \textbf{Binary Search} & 
     \parbox[t]{5cm}{Recurrence equation: We halve our problem every step, and make one comparison on each level. This is
     $W(n) = W\left(\dfrac{n}{2}\right) + 1$ for $n > 1$, $n$ a power of 2. $W(1) = 1$.\\
@@ -106,7 +107,7 @@ Use a proof by contradiction. Let $c = \dfrac{1}{6}$. If $n \in o(5n)$, there mu
     $W(n) = W(0) + W\left(n - 1\right) + n - 1 = W\left(n - 1\right) + n - 1$. $W(1) = 1$\\
     As we keep reducing our problem size by one from $n-1$ to $n-2$, $n-3$..., this is $\dfrac{n(n-1)}{2}$.
     }
-\end{tabular}
+\end{longtable}
  
 \section{Dynamic Programming}
 \begin{tabular}{p{2cm} p{5cm} }
@@ -121,18 +122,34 @@ Use a proof by contradiction. Let $c = \dfrac{1}{6}$. If $n \in o(5n)$, there mu
 
 We can use dynamic programming in an $n^3$ algorithm to find the minimum number of multiplications for any given number of matrices. Shown is the setup for matrices $A_1$...$A_5$.
 \begin{center}
-\begin{tikzpicture}
-    \node[box] (A) at (0, -0) {1 $|$\quad 0 \quad$|$\quad 0 \quad$|$\quad 0 \quad$|$\quad 0 \quad$|$\quad 0 \quad$|$ 5};
-    \node[box] (B) at (0, -1) {2 $| A_1\cdot A_2 | A_2\cdot A_3 | A_3\cdot A_4 | A_4\cdot A_5 |$ 4};
-    \node[box] (C) at (0, -2) {3 $| A_1\cdot A_2 \cdot A_3 | A_2\cdot A_3 \cdot A_4 | A_3\cdot A_4 \cdot A_5 |$ 3};
-    \node[box] (D) at (0, -3) {4 $| A_1\cdot A_2 \cdot A_3 \cdot A_4 | A_2\cdot A_3 \cdot A_4 \cdot A_5 |$ 2};
-    \node[box] (E) at (0, -4) {5 $| A_1\cdot A_2 \cdot A_3 \cdot A_4 \cdot A_5 |$ 1};
+\begin{tikzpicture}[scale = 0.8, every node/.style={scale=0.8}]
+    \draw (0,0) -- (5, -5) -- (10, 0)
+          (0, 0) -- (1, 1) -- (6, -4)
+          (1, -1) -- (3, 1) -- (7, -3)
+          (2, -2) -- (5, 1) -- (8, -2)
+          (3, -3) -- (7, 1) -- (9, -1)
+          (4, -4) -- (9, 1) -- (10, 0);
+    \draw (1, 0) node {$0$}
+          (3, 0) node {$0$}
+          (5, 0) node {$0$}
+          (7, 0) node {$0$}
+          (9, 0) node {$0$}
+          (2, -1) node {$A_1 \cdot A_2$}
+          (4, -1) node {$A_2 \cdot A_3$}
+          (6, -1) node {$A_3 \cdot A_4$}
+          (8, -1) node {$A_4 \cdot A_5$}
+          (3, -2) node {$A_1 \cdot A_2 \cdot A_3$}
+          (5, -2) node {$A_2 \cdot A_3 \cdot A_4$}
+          (7, -2) node {$A_3 \cdot A_4 \cdot A_5$}
+          (4, -3) node [text width=1.4cm] {$A_1 \cdot A_2 \cdot A_3 \cdot A_4$}
+          (6, -3) node [text width=1.4cm] {$A_2 \cdot A_3 \cdot A_4 \cdot A_5$}
+          (5, -4) node [text width=1.6cm] {$A_1 \cdot A_2 \cdot A_3 \cdot A_4 \cdot A_5$};
 \end{tikzpicture}
 \end{center}
 \begin{tabular}{p{2cm} p{5cm} }
     \textbf{Sequence Alignment:} & You know how this works. Pull from the bottom diagonal. Assume a penalty of 1 for a mismatch and a penalty of 2 for a gap, use the dynamic programming algorithm to find an optimal alignment of the following sequences.
 \end{tabular}\\
-As an example from the last homework:\\
+As an example from the last homework:
 \begin{center}
     C C G G G T T A C C A\\
     G G A G T T C A
@@ -166,12 +183,10 @@ Show both the table and the optimal alignment.
 \end{center}
 
 \section{Minimum Spanning Trees and Greedy Algorithms}
-\begin{tabular}{p{2cm} p{5cm} }
+\begin{longtable}{p{2cm} p{5cm} }
     \textbf{Spanning Tree} & For a graph $G$, it's spanning tree is a connected subgraph that contains all of $G$'s verticies and is a tree.\\
     \textbf{Minimum}\\ \textbf{Spanning Tree} & For a graph $G$, it is a spanning tree of minimum weight.\\\\
-    \textbf{Prim's}\\ \textbf{Algorithm} & Builds a minimum spanning tree vertex by vertex using an arbitrary starting vertex. Each step it will add the cheapest possible connection from the current vertex to the next. The algorithm is $\Theta(n^2)$.
-\end{tabular}
-\begin{tabular}{p{2cm} p{5cm} }
+    \textbf{Prim's}\\ \textbf{Algorithm} & Builds a minimum spanning tree vertex by vertex using an arbitrary starting vertex. Each step it will add the cheapest possible connection from the current vertex to the next. The algorithm is $\Theta(n^2)$.\\
     \textbf{Kruskal's}\\ \textbf{Algorithm} & \parbox[t]{5cm}{
     Builds a minimum spanning tree edge by edge, taking the cheapest edge available unless it causes a cycle. The steps to implement are as follows:
     \begin{enumerate}
@@ -180,17 +195,25 @@ Show both the table and the optimal alignment.
     \end{enumerate}
     In the worst case, though, every vertex is connected to every other vertex. This means $E \in \Theta(V^2)$. Thus, the worst case complexity is $\Theta((V^2 \lg(E))$.
     }
-\end{tabular}\\
-From the above descriptions, we can quickly conclude that Kruskal's Algorithm is better for sparse graphs, and Prim's Algorithm is better for dense graphs.\\
-\begin{tabular}{p{2cm} p{5cm} }
+\end{longtable}
+From the above descriptions, we can quickly conclude that Kruskal's Algorithm is better for sparse graphs, and Prim's Algorithm is better for dense graphs.
+\newpage
+\begin{longtable}{p{2cm} p{5cm} }
     \textbf{Dijkstra's}\\ \textbf{Algorithm} & \parbox[t]{5cm}{
     Builds a shortest path from a vertex $v_0$ to a destination $v_n$ vertex by vertex using an arbitrary starting vertex. Each step it will add the cheapest possible connection from the tree to another vertex, \textit{using the available connections already made in order to reduce possible costs}. The algorithm is $\Theta(n^2)$.
     }
-\end{tabular}
+\end{longtable}
 
 \section{Backtracking}
 Note that the book explicitly states that backtracking is a modification of DFS. We just DFS a lot.\\\\
-\begin{tabular}{p{2cm} p{5cm} }
-    \textbf{DFS} & 
-\end{tabular}
+\begin{longtable}{p{2.2cm} p{5cm} }
+    \textbf{DFS} & DFS is a $\Theta(V + E)$ traversal of any graph. Pseudocode is as follows.\\
+    \textbf{Backtracking} & Create a state space tree and traverse it. After determining that a node can only lead to death and destruction, go back to the parent and try again. The only way we can determine this is either by running out of options to come up with a solution, or using an upper bound to state a solution will get no worse. These algorithms are pretty terrible; the $n-queens$ problem uses a $\Theta(n^n)$ solution. The sum-of-subsets problem uses an upper bound and is a $T_n \approx 2^{n+1}-1$ algorithm
+\end{longtable}
+\section{Branch-and-Bound}
+Note that the book explicitly states that backtracking is a modification of \textit{breadth}-first search. We just BFS a lot.\\\\
+\begin{longtable}{p{2.2cm} p{5cm} }
+    \textbf{BFS} & BFS is also a  $\Theta(V + E)$ traversal of any graph. Pseudocode is as follows.\\
+    \textbf{Branch-and-Bound} & Just like Backtracking, with the modification that we visit the children of the current node only if its bound (an estimate guessing what will follow the current node) indicates that that path will lead to a better solution than the current best solution. That's the only effective difference. This is a \textbf{best}-first search.
+\end{longtable}
 \end{document}
