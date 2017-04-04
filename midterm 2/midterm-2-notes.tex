@@ -3,10 +3,14 @@
 \usepackage{longtable}
 \usepackage{amsmath, mathtools, listings}
 \usepackage{graphicx, tikz, }% Include figure files
-\usetikzlibrary{arrows, decorations.markings,shapes,arrows,fit}
+\usetikzlibrary{arrows, decorations.markings, fit, positioning, shapes}
 \tikzset{box/.style={draw, minimum size=2em, text width=20em, text centered},
          bigbox/.style={draw, inner sep=1pt,label={[shift={(-3ex,3ex)}]south east:#1}}
 }
+
+\tikzset{main node/.style={circle,draw,minimum size=1cm,inner sep=0pt},}
+\tikzset{min node/.style={circle,draw,minimum size=0.5cm,inner sep=0pt},}
+
  %----------New special chars of computer scientists----------%
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor} 
@@ -24,7 +28,7 @@
 %--------------------------Document--------------------------%
 \begin{document}
 \title{COS 485 Crib Notes}
-\author{}
+\author{Midterm 2}
 \maketitle
 \section{Formula You Should Know Already}
 \begin{align*}
@@ -89,16 +93,16 @@ By definition, $n \leq c\cdot n^2$. To find a working expression that conforms t
 Use a proof by contradiction. Let $c = \dfrac{1}{6}$. If $n \in o(5n)$, there must exist some $N$ such that, for $n \geq N$, $n \leq \dfrac{1}{6}5n$. This reduces to $1 \leq \dfrac{5}{6}$, which cannot be true.
 \end{exmp}
 \section{Divide and Conquer}
-\begin{longtable}{p{2cm} p{5cm} }
+\begin{longtable}{p{2cm} p{7cm} }
     \textbf{Binary Search} & 
-    \parbox[t]{5cm}{Recurrence equation: We halve our problem every step, and make one comparison on each level. This is
+    \parbox[t]{6cm}{Recurrence equation: We halve our problem every step, and make one comparison on each level. This is
     $W(n) = W\left(\dfrac{n}{2}\right) + 1$ for $n > 1$, $n$ a power of 2. $W(1) = 1$.\\
     The solution is $\lg n + 1$ if $n$ is a power of 2, or $\floor{\lg n} + 1$ otherwise.}\\
-    \textbf{Mergesort} & \parbox[t]{5cm}{
+    \textbf{Mergesort} & \parbox[t]{6cm}{
     Recurrence equation: We split our array in half, mergesort both halves, and then merge the results together.
     $W(n) = 1 + 2W\left(\dfrac{n}{2}\right) + n-1$. $W(1) = 1$\\
     This is $(\ceil{\lg n} + 1)n$, or $\Theta(n\lg n)$.}\\
-    \textbf{Quicksort:} & \parbox[t]{5cm}{
+    \textbf{Quicksort:} & \parbox[t]{6cm}{
     \textit{(Best-case)}\\
     Recurrence equation: We partition our array on a pivot, quicksort both partitions, and we're done. In the best case, our partition is separates the array such that it is divided in half.
     $B(n) = n + 2B\left(\dfrac{n}{2}\right) + 0$. $B(1) = 1$\\
@@ -110,10 +114,10 @@ Use a proof by contradiction. Let $c = \dfrac{1}{6}$. If $n \in o(5n)$, there mu
 \end{longtable}
  
 \section{Dynamic Programming}
-\begin{tabular}{p{2cm} p{5cm} }
+\begin{tabular}{p{2cm} p{6cm} }
     \textbf{Floyd's}\\ \textbf{Algorithm:} & I know this one by heart, (un)fortunately. This uses the matrices $D^(0)$...$D^(n)$ to provide $n^2$ answers in $n^3$ time.\\
     \textbf{Matrix Chain Multiplication:} &
-    \parbox[t]{5cm}{Base form: $A_1[d_0\times d_1] \cdot A_2[d_1\times d_2] => R[d_0 \times d_2]$.\\
+    \parbox[t]{6cm}{Base form: $A_1[d_0\times d_1] \cdot A_2[d_1\times d_2] => R[d_0 \times d_2]$.\\
     Not all orders of multiplication are equivalent. Consider the following:\\
     $A_1[50\times 10] \cdot A_2[10\times 30] \cdot A_2[30\times 20]$\\
     $(A_1\cdot A_2)A_3 = 50\times 10\times 30 + 50\times 30\times 20 = 15000 + 30000$\\
@@ -146,7 +150,7 @@ We can use dynamic programming in an $n^3$ algorithm to find the minimum number 
           (5, -4) node [text width=1.6cm] {$A_1 \cdot A_2 \cdot A_3 \cdot A_4 \cdot A_5$};
 \end{tikzpicture}
 \end{center}
-\begin{tabular}{p{2cm} p{5cm} }
+\begin{tabular}{p{2cm} p{6cm} }
     \textbf{Sequence Alignment:} & You know how this works. Pull from the bottom diagonal. Assume a penalty of 1 for a mismatch and a penalty of 2 for a gap, use the dynamic programming algorithm to find an optimal alignment of the following sequences.
 \end{tabular}\\
 As an example from the last homework:
@@ -183,11 +187,11 @@ Show both the table and the optimal alignment.
 \end{center}
 
 \section{Minimum Spanning Trees and Greedy Algorithms}
-\begin{longtable}{p{2cm} p{5cm} }
+\begin{longtable}{p{2cm} p{6cm} }
     \textbf{Spanning Tree} & For a graph $G$, it's spanning tree is a connected subgraph that contains all of $G$'s verticies and is a tree.\\
     \textbf{Minimum}\\ \textbf{Spanning Tree} & For a graph $G$, it is a spanning tree of minimum weight.\\\\
     \textbf{Prim's}\\ \textbf{Algorithm} & Builds a minimum spanning tree vertex by vertex using an arbitrary starting vertex. Each step it will add the cheapest possible connection from the current vertex to the next. The algorithm is $\Theta(n^2)$.\\
-    \textbf{Kruskal's}\\ \textbf{Algorithm} & \parbox[t]{5cm}{
+    \textbf{Kruskal's}\\ \textbf{Algorithm} & \parbox[t]{6cm}{
     Builds a minimum spanning tree edge by edge, taking the cheapest edge available unless it causes a cycle. The steps to implement are as follows:
     \begin{enumerate}
         \item Sort the edges in time $\Theta(E \lg(E))$.
@@ -197,23 +201,119 @@ Show both the table and the optimal alignment.
     }
 \end{longtable}
 From the above descriptions, we can quickly conclude that Kruskal's Algorithm is better for sparse graphs, and Prim's Algorithm is better for dense graphs.
-\newpage
-\begin{longtable}{p{2cm} p{5cm} }
-    \textbf{Dijkstra's}\\ \textbf{Algorithm} & \parbox[t]{5cm}{
+\begin{longtable}{p{2cm} p{6cm} }
+    \textbf{Dijkstra's}\\ \textbf{Algorithm} & \parbox[t]{6cm}{
     Builds a shortest path from a vertex $v_0$ to a destination $v_n$ vertex by vertex using an arbitrary starting vertex. Each step it will add the cheapest possible connection from the tree to another vertex, \textit{using the available connections already made in order to reduce possible costs}. The algorithm is $\Theta(n^2)$.
     }
 \end{longtable}
 
 \section{Backtracking}
-Note that the book explicitly states that backtracking is a modification of DFS. We just DFS a lot.\\\\
-\begin{longtable}{p{2.2cm} p{5cm} }
-    \textbf{DFS} & DFS is a $\Theta(V + E)$ traversal of any graph. Pseudocode is as follows.\\
+Note that the book explicitly states that backtracking is a modification of DFS. We just DFS a lot.\\
+You remember DFS. Recall the following?
+\textit{Demonstrate the use of depth first search on this graph starting at vertex A. Draw the search tree and number the vertices in the order they are first encountered.}
+\begin{center}
+    \begin{tikzpicture}[scale = 0.6, every node/.style={scale=0.6}]
+       \node[main node] (1) {$a$};
+       \node[main node] (2) [right = 2cm of 1]{$b$};
+       
+       \node[main node] (3) [below = 1.5cm of 1]{$d$};
+       \node[main node] (4) [below = 1.5cm of 2]{$e$};
+       \node[main node] (5) [left = 2cm of 3]{$c$};
+       \node[main node] (6) [right = 2cm of 4]{$f$};
+       
+       \node[main node] (7) [below = 1.5cm of 5]{$g$};
+       \node[main node] (8) [below = 1.5cm of 3]{$h$};
+       \node[main node] (9) [below = 1.5cm of 4]{$i$};
+       \node[main node] (10) [below = 1.5cm of 6]{$j$};
+       
+       \node[main node] (11) [below = 1.5cm of 8]{$k$};
+       \node[main node] (12) [below = 1.5cm of 9]{$l$};
+       \path[draw,thick]
+       (1) edge node [above]{3} (2)
+       (1) edge node [left]{4} (3)
+       (5) edge node [above]{5} (1)
+       (5) edge node [above]{2} (3)
+       (3) edge node [above]{1} (4)
+       (2) edge node [left]{3} (4)
+       (2) edge node [right]{6} (6)
+       (4) edge node [above]{2} (6)
+       (5) edge node [left]{4} (7)
+       (3) edge node [left]{5} (8)
+       (4) edge node [left]{4} (9)
+       (6) edge node [left]{5} (10)
+       (7) edge node [above]{3} (8)
+       (8) edge node [above]{6} (9)
+       (9) edge node [above]{3} (10)
+       (7) edge node [above]{6} (11)
+       (8) edge node [left]{7} (11)
+       (11) edge node [above]{8} (12)
+       (9) edge node [left]{5} (12)
+       (10) edge node [above]{9} (12);
+       
+       \path[draw,ultra thick, ->]
+       (1) edge node [below]{\#1} (2)
+       (2) edge node [right]{\#2} (4)
+       (4) edge node [below]{\#3} (3)
+       (3) edge node [below]{\#4} (5)
+       (5) edge node [right]{\#5} (7)
+       (7) edge node [below]{\#6} (8)
+       (8) edge node [below]{\#7} (9)
+       (9) edge node [below]{\#8} (10)
+       (10) edge node [right]{\#9} (6)
+       (10) edge node [below]{\#10} (12)
+       (12) edge node [below]{\#11} (11)
+       ;
+    \end{tikzpicture}
+\end{center}
+The path taken is ABEDCGHIJFLK.\\
+\begin{tikzpicture}[scale = 0.8, every node/.style={scale=0.8}]
+   \node[min node] (1) {$a$};
+   \node[min node] (2) [right = 0.5cm of 1]{$b$};
+   \node[min node] (3) [right = 0.5cm of 2]{$e$};
+   \node[min node] (4) [right = 0.5cm of 3]{$d$};
+   \node[min node] (5) [right = 0.5cm of 4]{$c$};
+   \node[min node] (6) [right = 0.5cm of 5]{$g$};
+   \node[min node] (7) [right = 0.5cm of 6]{$h$};
+   \node[min node] (8) [right = 0.5cm of 7]{$i$};
+   \node[min node] (9) [right = 0.5cm of 8]{$j$};
+   \node[min node] (10) [below right = 1cm of 9]{$f$};
+   \node[min node] (11) [above right = 1cm of 9]{$l$};
+   \node[min node] (12) [right = 0.5cm of 11]{$k$};
+   \path[draw, ->]
+   (1) edge node {} (2)
+   (2) edge node {} (3)
+   (3) edge node {} (4)
+   (4) edge node {} (5)
+   (5) edge node {} (6)
+   (6) edge node {} (7)
+   (7) edge node {} (8)
+   (8) edge node {} (9)
+   (9) edge node {} (10)
+   (9) edge node {} (11)
+   (11) edge node {} (12);
+\end{tikzpicture}
+    
+\begin{longtable}{p{2.2cm} p{6cm} }
+        \textbf{DFS} & DFS is a  $\Theta(V + E)$ traversal of any graph. Pseudocode for the recursive form is as follows.
+\begin{lstlisting}[language=php]
+mark the curr vertex, u, visited
+enter u in the discovery order set
+
+foreach vertex, v, adjacent 
+to the curr vertex, u:
+  if v !visited:
+    Set parent of v to u
+    DFS starting at v
+mark u finished 
+enter u in the 'finished' set
+    
+\end{lstlisting}\\
     \textbf{Backtracking} & Create a state space tree and traverse it. After determining that a node can only lead to death and destruction, go back to the parent and try again. The only way we can determine this is either by running out of options to come up with a solution, or using an upper bound to state a solution will get no worse. These algorithms are pretty terrible; the $n-queens$ problem uses a $\Theta(n^n)$ solution. The sum-of-subsets problem uses an upper bound and is a $T_n \approx 2^{n+1}-1$ algorithm
 \end{longtable}
 \section{Branch-and-Bound}
-Note that the book explicitly states that backtracking is a modification of \textit{breadth}-first search. We just BFS a lot.\\\\
-\begin{longtable}{p{2.2cm} p{5cm} }
-    \textbf{BFS} & BFS is also a  $\Theta(V + E)$ traversal of any graph. Pseudocode is as follows.\\
+Note that the book explicitly states that backtracking is a modification of \textit{breadth}-first search. We just BFS a lot.
+\begin{longtable}{p{2.2cm} p{6cm} }
+    \textbf{BFS} & BFS is also a  $\Theta(V + E)$ traversal of any graph, using a dequeue.\\
     \textbf{Branch-and-Bound} & Just like Backtracking, with the modification that we visit the children of the current node only if its bound (an estimate guessing what will follow the current node) indicates that that path will lead to a better solution than the current best solution. That's the only effective difference. This is a \textbf{best}-first search.
 \end{longtable}
 \end{document}
