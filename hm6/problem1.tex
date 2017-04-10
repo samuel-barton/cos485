@@ -7,7 +7,9 @@ key in a sorted list.
 Let us assume our list has N items. We assume that these items are in
 sorted order. There are N possible solutions, namely keys, from which 
 we must choose one. Thus the height of the decision tree must be large
-enough to cover the search space of N items. Since we have a binary 
+enough to cover the search space of N items. Since we have sorted the 
+items we have a binary decision, either an item is greater than its 
+predecessor or it is less than its predecessor. Thus we have a binary 
 tree where each node can have at most two children, the height of the 
 tree can be calculated by solving the following equation.
 $$
@@ -15,3 +17,5 @@ $$
     \lg (N) \leq h \; \implies \; 
     h \geq \lg (N)
 $$
+
+
