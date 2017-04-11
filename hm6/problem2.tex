@@ -5,39 +5,19 @@ demanded a weighing of $N$ coins with the understanding that one coin
 is counterfeit and lighter than the others. 
 \\
 \\
-The algorithm to effeciently solve this is as follows:
+The algorithm to efficiently solve this is as follows:
 \begin{enumerate}[noitemsep]
-    \item divide coins into three parts $A$, $B$, and $C$. $A$ and $B$
-          to be divided into a multiple of three, and the rest are left
-          in $C$ 
-    \item weigh two of them
-    \subitem if $A = B$,  then throw out $A$ and $B$ and keep $C$
-    \subitem if $A < B$, then throw out $B$ and $C$ and keep $A$
-    \subitem if $B < A$, then throw out a and $C$ and keep $B$
-    \item repeat
+    \item Divide coins into three parts $A$, $B$, and $C$. $A$ and $B$
+          will be divided into problems of size $\floor[\bigg]{\dfrac{n}{3}}$, and the remaining problem of size $\floor[\bigg]{\dfrac{n}{3}} \leq S \leq \ceil[\bigg]{\dfrac{n}{3}} + 1$ are placed in $C$.
+    \item Weigh two of the piles.
+    \subitem If $A = B$,  then throw out $A$ and $B$ and keep $C$
+    \subitem If $A < B$, then throw out $B$ and $C$ and keep $A$
+    \subitem If $B < A$, then throw out $A$ and $C$ and keep $B$
+    \item Repeat
 \end{enumerate} 
 
-In the end, N wasn't divisible by 3, then we will have either 1 or two 
-extra to deal with. If there is one extra, then we do two comparisons. 
-If there are two extra left then we still do two comparisons.
+In the end, if N wasn't divisible by 3, then we will have either 1 or two extra coins to deal with. In either case, however, continue our process of comparisons until there is nothing left. If the amount is not evenly divisible by 3, we may do 2 more comparisons than normal.
+% Is it really 2? 
 \\
 \\
-In the worst case, we do $\lceil \; \log_3 N \; \rceil + 1$ comparisons.
-\\
-\\
-{\centering{\Large \textbf{ALTERNATE}}}
-\\
-\\
-In this problem, we are given $N$ coins and asked to find a lightweight counterfeit amid them. We are instructed that this can only be done by weighing them. The scale we are given indicates the three following cases:
-\begin{enumerate}
-    \item Side A is heaviest.
-    \item Side B is heaviest.
-    \item Both sides are of equal weight.
-\end{enumerate}
-
-To solve this problem, we divide our coins into problems of size $\ceil[\bigg]{\dfrac{n}{3}}$, and arbitrarily pick two of the three available piles to weigh. There are two possible results of this weighing:
-\begin{enumerate}
-    \item The two piles are equal in size. Throw them both out; none are fakes. Keep the third pile we didn't weigh, as it must contain a fake.
-    \item The two piles are not equal in size. Keep the lightest one, as it contains the fake, and throw out both the heavy one we weighed and the one we didn't weigh.
-\end{enumerate}
-Repeat this process of dividing up into thirds, keeping discarding the two heavy piles, until only the counterfeit coin remains.
+In the worst case, we do $\ceil[\big]{\log_3(n)} + 1$ comparisons.
