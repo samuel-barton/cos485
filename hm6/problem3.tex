@@ -1,0 +1,20 @@
+\section*{Problem 3}
+
+In this problem we are asked to make a decision tree argument to
+determine the absolute lower bound for any algorithm to solve the 
+\textit{Miserly King Coin Counterfeit Checking Problem}.
+\\
+\\
+In the problem we are given $N$ coins, and so there are $N$ possible 
+solutions to the problem. Each decision we make has three
+possible outcomes, so we have a ternary tree. Thus in order to 
+determine the minimum possible height of a decision tree with $N$
+leaves we must solve the following equation:
+\\
+$$
+N \leq 3^h \implies \log_3 N \leq \log_3 3^h \implies \log_3 N \leq h
+$$
+\\
+Thus we see that there must be at least $\log_3 N$ decisions for any 
+algorithm to solve the \textit{Miserly King Coin Counterfeit Checking 
+Problem}.
