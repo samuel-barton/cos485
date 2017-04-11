@@ -4,7 +4,7 @@ In order to have a worst-case linear algorithm for finding the mode in an array,
     \item Create an empty HashMap of the form $K$, $V$ where $K$ is a 
     unique SAT score, and $V$ is the number of occurences of that score.
     \item Iterate over the array. For each element, check to see if it
-          is a key in our HashMapy.
+          is a key in our HashMap.
         \subitem If it is not a key, add it to the HashMap, and set the
                  value to 1.
         \subitem If it is a key, increment the associated value.
@@ -16,13 +16,12 @@ Our analysis is as follows:\\
 \begin{enumerate}
     \item Creation of the \textbf{empty} HashMap is $O(1)$.
     \item Our iteration through the array is $T_n = n$. At each element,
-          we perform an $O(1)$ \textit{get} operation. We then perform a
-          nother $O(1)$ insertion, whether it be an entry that gets 
+          we perform an $O(1)$ \textit{get} operation. We then perform another $O(1)$ insertion, whether it be an entry that gets 
           inserted, or an existing value that gets updated. This is a 
           total of $T_n = 3n$
     \item Our linear pass across the set of keys in the HashMap is
           $T_n = k$ where $k$ is the number of unique SAT scores. In 
-          the worst case, there are $N$ keys, so we have $k = n$ 
+          the worst case, there are $n$ keys, so we have $k = n$ 
           and $T_n = n$.
 \end{enumerate}
 Therefore, we can express our time complexity as the following:
