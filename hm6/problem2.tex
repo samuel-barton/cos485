@@ -5,18 +5,31 @@ demanded a weighing of $N$ coins with the understanding that one coin
 is counterfeit and lighter than the others. 
 \\
 \\
-The algorithm to effeciently solve this is as follows:
-\begin{enumerate}[noitemsep]
-    \item divide coins into three parts $A$, $B$, and $C$. $A$ and $B$ 
-          are of size $\ceil[\bigg]{\frac{n}{3}}$ and $C$ is of size 
-          $\ceil[\bigg]{\frac{n}{3}} + K$ where $K$ is the remainder 
-          of $\frac{n}{3}$
-    \item 
-    \subitem if $A = B$,  then throw out $A$ and $B$ and keep $C$
-    \subitem if $A < B$, then throw out $B$ and $C$ and keep $A$
-    \subitem if $B < A$, then throw out a and $C$ and keep $B$
-    \item repeat
+The algorithm to efficiently solve this is as follows:
+\begin{enumerate}[itemsep=0.25em]
+    \item Divide coins into three parts $A$, $B$, and $C$ where the size
+          each is $\floor[\big]{\frac{n}{3}}$. If $N$ is not divisible
+          by 3, then we will put the 1 or two additional coins in $D$
+          and set them aside.
+    \item Weigh two of $A$, $B$, or $C$.
+    \subitem If $A = B$,  then throw out $A$ and $B$ and keep $C$
+    \subitem If $A < B$, then throw out $B$ and $C$ and keep $A$
+    \subitem If $B < A$, then throw out $A$ and $C$ and keep $B$
+    \item Repeat until only one of $A$, $B$, and $C$ remain
+    \item If $N$ is divisible by 3, then we are done. Otherwise, we
+          have either 1 or 2 elements in $D$ to consider. Compare 
+          whichever of $A$, $B$, or $C$ remains with 1 of the elements
+          in $D$ using the above logic.
 \end{enumerate} 
-
-If $N$ wasn't divisible by 3, then our algorithm will still work as we 
-take the ceiling of $\frac{N}{3}$ for the size of each pile.
+%
+In the worst case, N is not divisible by 3 and has a remainder of 2. 
+Thus there are 2 elements in $D$ and we do $\ceil[\big]{\log_3(n)}$ 
+comparisons to end up with 1 element from $A$, $B$, or $C$ and two 
+elements from $D$ to consider. We make one additional comparision with 
+1 element from $D$ and the remaining element from the prior comparisons,
+and can then determine which coin is the counterfeit. Thus in the worst
+case our algorithm will have a time complexity equal to the number of
+comparisons which is
+$$
+    T_n = \floor[\big]{\log_3(n)} + 1
+$$
