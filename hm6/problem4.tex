@@ -1,11 +1,15 @@
 \section*{Problem 4}
 In order to have a worst-case linear algorithm for finding the mode in an array, consider the following algorithm:
 \begin{enumerate}
-    \item Create an empty HashMap in the form of $K$, $V$. The type of $K$ is the same as that of the array values, and the type of $V$ is an integer, used to count the number of occurrences of that key.
-    \item Perform a linear pass on our array. For each element, check to see if it is in our HashMap as a key.
-        \subitem If it is not in our HashMap, put in the element as the key, and set the HashMap's value to 1 to indicate 1 occurrence.
-        \subitem If it is in our HashMap, increase the associated value in the HashMap by one, to indicate one more occurrence than before.
-    \item Perform a linear pass across the set of entries in the HashMap, keeping track of the entry with the largest value. This entry holds the element that is the mode as the key, and the number of times it occurred as the value.
+    \item Create an empty HashMap of the form $K$, $V$ where $K$ is a 
+    unique SAT score, and $V$ is the number of occurences of that score.
+    \item Iterate over the array. For each element, check to see if it
+          is a key in our HashMapy.
+        \subitem If it is not a key, add it to the HashMap, and set the
+                 value to 1.
+        \subitem If it is a key, increment the associated value.
+    \item Iterate over the keys in the HashMap, and find the key with
+          the maximum value. This will be the mode. 
 \end{enumerate}
 
 Our analysis is as follows:\\
