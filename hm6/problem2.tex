@@ -1,3 +1,25 @@
 \section*{Problem 2}
 
+In this problem we consider the case of one miserly king who has 
+demanded a weighing of $N$ coins with the understanding that one coin
+is counterfeit and lighter than the others. 
+\\
+\\
+The algorithm to effeciently solve this is as follows:
+\begin{enumerate}[noitemsep]
+    \item divide coins into three parts $A$, $B$, and $C$. $A$ and $B$
+          to be divided into a multiple of three, and the rest are left
+          in $C$ 
+    \item weigh two of them
+    \subitem if $A = B$,  then throw out $A$ and $B$ and keep $C$
+    \subitem if $A < B$, then throw out $B$ and $C$ and keep $A$
+    \subitem if $B < A$, then throw out a and $C$ and keep $B$
+    \item repeat
+\end{enumerate} 
 
+In the end, N wasn't divisible by 3, then we will have either 1 or two 
+extra to deal with. If there is one extra, then we do two comparisons. 
+If there are two extra left then we still do two comparisons.
+\\
+\\
+In the worst case, we do $\lceil \; \log_3 N \; \rceil + 1$ comparisons.
