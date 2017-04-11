@@ -23,3 +23,21 @@ If there are two extra left then we still do two comparisons.
 \\
 \\
 In the worst case, we do $\lceil \; \log_3 N \; \rceil + 1$ comparisons.
+\\
+\\
+{\centering{\Large \textbf{ALTERNATE}}}
+\\
+\\
+In this problem, we are given $N$ coins and asked to find a lightweight counterfeit amid them. We are instructed that this can only be done by weighing them. The scale we are given indicates the three following cases:
+\begin{enumerate}
+    \item Side A is heaviest.
+    \item Side B is heaviest.
+    \item Both sides are of equal weight.
+\end{enumerate}
+
+To solve this problem, we divide our coins into problems of size $\ceil[\bigg]{\dfrac{n}{3}}$, and arbitrarily pick two of the three available piles to weigh. There are two possible results of this weighing:
+\begin{enumerate}
+    \item The two piles are equal in size. Throw them both out; none are fakes. Keep the third pile we didn't weigh, as it must contain a fake.
+    \item The two piles are not equal in size. Keep the lightest one, as it contains the fake, and throw out both the heavy one we weighed and the one we didn't weigh.
+\end{enumerate}
+Repeat this process of dividing up into thirds, keeping discarding the two heavy piles, until only the counterfeit coin remains.
