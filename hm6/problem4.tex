@@ -1,1 +1,21 @@
 \section*{Problem 4}
+In order to have a worst-case linear algorithm for finding the mode in an array, consider the following algorithm:
+\begin{enumerate}
+    \item Create an empty HashMap in the form of $K$, $V$. The type of $K$ is the same as that of the array values, and the type of $V$ is an integer, used to count the number of occurrences of that key.
+    \item Perform a linear pass on our array. For each element, check to see if it is in our HashMap as a key.
+        \subitem If it is not in our HashMap, put in the element as the key, and set the HashMap's value to 1 to indicate 1 occurrence.
+        \subitem If it is in our HashMap, increase the associated value in the HashMap by one, to indicate one more occurrence than before.
+    \item Perform a linear pass across the set of entries in the HashMap, keeping track of the entry with the largest value. This entry holds the element that is the mode as the key, and the number of times it occurred as the value.
+\end{enumerate}
+
+Our analysis is as follows:\\
+\begin{enumerate}
+    \item Creation of the \textbf{empty} HashMap is $O(1)$.
+    \item Our linear pass across the array is, by construction, $T_n = n$. At each element, we perform an $O(1)$ \textit{get} operation. We then perform another $O(1)$ insertion, whether it be an entry that gets inserted, or an existing value that gets updated. This is a total of $T_n = 3n$
+    \item Our linear pass across the set of entries in the HashMap is also  $T_n = n$. In the worst case, there are $N$ entries, so we check $n$ times in total if we have a new max. This is a total of $T_n = 2n$.
+\end{enumerate}
+Therefore, we can express our time complexity as the following:
+\\
+$$
+    T_n = O(1) + 3n + 2n \implies T_n \in \Theta(n)
+$$
