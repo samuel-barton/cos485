@@ -1,3 +1,20 @@
 \section*{Problem 5}
 
+The following is an an algorithm for finding the mode in an unsorted array so large we can't do anything fun, like using HashMaps.
+\begin{enumerate}
+    \item Pivot using a random pivot. Move information around like in Quick Select.
+    \item Keep track of how many times the pivot occurs. Store this pivot value and count to one side.
+    \item Compare the cardinality of the subset of items equal to the pivot value with the cardinality of the sets of vales to the right and to the left of it.
+    \begin{enumerate}
+        \item If the right of the pivot is larger than the cardinality of the pivot, recursively repeat this process on the right side. Mirror case for the left.
+        \item If the cardinality of the pivot is the largest, then we have a candidate answer. Update our ``best-so-far pivot'' with this one.
+    \end{enumerate}
+    \item On your way back up, check the other side to see if it is larger than the best solution. If it is, go down that path in the same way as above.
+\end{enumerate}
 
+\textit{Analysis:}
+\begin{itemize}
+    \item In the best case, we have an array with more elements in the mode than any other element. We then randomly select these elements and move around $ < \dfrac{n}{2}$ elements, realize the set of elements equal to the partition value is larger than anything else (a $T_n = n$ check), and stop. This entire process is $\Theta(n)$.
+    \item In the worst case, we have two elements in the mode and millions of other, unique elements. We keep partitioning randomly, but don't find anything that could qualify as the mode until we've evaluated everything else. An example would be the set $\{0, 1^{50}, 1^{50} -1, 1^{50} -2, ..., 3, 2, 1, 0\}$. We could be earth-shatteringly unlucky and pick a partition at $0$, then $1$, then $2$, and so forth. In this event, however, we still only move $n - 1$ elements around, but we need a pass of size $O(n)$ each time to find these elements that we need to move in the first place. This is $\Theta(n^2)$.
+    \item In the average case, we do not expect to be so unlucky. We expect our partition will be roughly around where the actual partition should be. Thus, given a uniform distribution of values, we hope to halve our problem size every time we go down a level. This reduction of problem sizes can be represented as the summation of $\sum\limits_{i = 1}^{\log n} \dfrac{n}{2^i} = n - 1$ This is a linear quantity. We loosely expect to re-evaluate a few paths, but we do not expect this process to incur significant additional cost, as we generally expect to evaluate only a few decisions. Therefore, we expect this algorithm is $\Theta(n)$ in the average case.
+\end{itemize}
