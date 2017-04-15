@@ -1,0 +1,43 @@
+\section*{Problem 6}
+
+In this continuation of the \textit{Miserly King} problem we are asked 
+to 
+determine the maximum number of coins we may weigh in three weighings 
+if we add the condition that the counterfeit may be lighter or heavier
+than the real coin. Also, we have access to an arbitrarily large number
+of good coins to use as reference. We'll call the good pile $G$.
+\\
+\\
+The algorithm to solve this is as follows:
+
+\begin{enumerate}[noitemsep]
+    \item Divide the coins up into three partitions $A$, $B$, and $C$ 
+          as before
+    \item weigh $A$ and $B$
+    \item If $weight(A) = weight(B)$ then the counterfeit is in $C$
+    \item If $weight(A) < weight(B)$ or $weight(A) > weight(B)$, 
+             then weigh $A$ against $G$ and note whether $A$ was 
+             heavier or lighter than $B$
+    \item if $weight(A) < weight(G)$, then the counterfeit coin
+                is in $A$, and it is lighter than the good coins
+    \item if $weight(A) >  weight(G)$, then the counterfeit coin
+                is in $A$, and it is heavier than the good coins
+    \item if $weight(A) = weight(G)$, then the counterfeit coin is                in $B$ and we know its weight as we noted whether it 
+                was heavier or lighter than $B$
+    \item Now that we know whether the counterfeit is heavier or 
+          lighter than the good coins we can continue as we did in the 
+          original \textit{Miserly King} problem.
+\end{enumerate}
+%
+Thus, while before we could weigh $N$ coins in $\ceil{\log_3 N}$ steps,
+now that we have to do one more weighing to determine the weight 
+difference between the counterfeit and a good coin, it will take  
+$\ceil{\log_3 N} + 1$ weighings to weigh $N$ coins.
+\\
+\\
+Solving this equation for $N$ with 3 weighings gives us the following:
+$$
+\ceil{\log_3 N} + 1 = 3 \implies 
+\ceil{\log_3 N} = 2 \implies 
+N = 3^2 = 9
+$$

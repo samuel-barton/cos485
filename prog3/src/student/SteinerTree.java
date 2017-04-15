@@ -34,9 +34,26 @@ import steinerTree.SteinerTreeTester;
  */ 
 public class SteinerTree
 {
+    /*=================================================================
+     *
+     * Method Name: bartMont
+     *
+     * Parameters:  Graph g - The graph we are working with
+     *              ArrayList<Vertex> targets - the target verticies
+     * 
+     * Returns: int - the total cost of our Steiner Tree
+     *
+     * Description: 
+     *
+     *===============================================================*/
+    private static int bartMont(Graph g, ArrayList<Vertex> targets)
+    {
+        return 0;
+    }
+
 	// Simple example routine that just does a depth first search until 
     // it reaches all of the target vertices.
-	public static int steinerTree(Graph g, ArrayList<Vertex> targets)						
+	public static int steinerTree(Graph g, ArrayList<Vertex> targets)
 	{	
 		// sort each vertex's edges shortest first, this should help a 
         // little
