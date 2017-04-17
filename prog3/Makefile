@@ -11,3 +11,4 @@ run:
 	cd jars; \
 	java -cp $(RUN_CP) steinerTree.SteinerTreeTester
 test:
+	echo "Testing"
