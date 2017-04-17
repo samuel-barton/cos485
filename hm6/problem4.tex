@@ -16,7 +16,7 @@ Our analysis is as follows:\\
 \begin{enumerate}
     \item Creation of the \textbf{empty} HashMap is $O(1)$.
     \item Our iteration through the array is $T_n = n$. At each element,
-          we perform an $O(1)$ \textit{get} operation. We then perform another $O(1)$ insertion, whether it be an entry that gets 
+          we perform a \textit{get} operation in the average case, generally considered to be $O(1)$. We then perform another (average case) $O(1)$ insertion, whether it be an entry that gets 
           inserted, or an existing value that gets updated. This is a 
           total of $T_n = 3n$
     \item Our linear pass across the set of keys in the HashMap is
@@ -29,3 +29,11 @@ Therefore, we can express our time complexity as the following:
 $$
     T_n = O(1) + 3n + n \implies T_n \in \Theta(n)
 $$
+\\
+\textit{Completely Optional Sidenote:}\\
+If we were given the scores as fixed width integers, we could radix sort the values (Cost $\Theta(kn)$, but $k$ is a constant due to the construction of this problem, making it $\Theta(n)$) Then, we could iterate through the values once, using the following rules.
+\begin{enumerate}
+    \item Let there be variables used to store the current best mode found, the number of occurrences it has, and an external variable used to keep track of how good the current run is.
+    \item Iterate element by element through the sorted array. As you go through each element, keep track of how many times it occurs. If this number is greater than our best so far, update the variables representing our best mode and it's number of occurrences. This is $\Theta(n)$.
+\end{enumerate}
+Thus, we expect this solution to be $\Theta(n)$.

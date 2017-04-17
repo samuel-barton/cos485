@@ -1,3 +1,20 @@
 \section*{Problem 5}
 
+To solve this problem, we may reuse our solution to problem 4 verbatim. To reiterate:
 
+\begin{enumerate}
+    \item Create an empty HashMap of the form $K$, $V$ where $K$ is a 
+    unique SAT score, and $V$ is the number of occurences of that score.
+    \item Iterate over the array. For each element, check to see if it
+          is a key in our HashMap.
+        \subitem If it is not a key, add it to the HashMap, and set the
+                 value to 1.
+        \subitem If it is a key, increment the associated value.
+    \item Iterate over the keys in the HashMap, and find the key with
+          the maximum value. This will be the mode. 
+\end{enumerate}
+
+As noted above, this is
+$$
+    T_n = O(1) + 3n + n \implies T_n \in \Theta(n)
+$$
