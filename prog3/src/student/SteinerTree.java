@@ -45,15 +45,28 @@ public class SteinerTree
      * Returns: int - the total cost of our Steiner Tree
      *
      * Description: The algorithm works as follows:
+     *
      *      1.  Calculate the neighbor edge cost sums for each 
      *          non-target vertex.
+     *      2.  Find all direct path's between K-nodes
+     *      3.  Add the N-K node with the minimum sum to K
+     *      4.  Check for connections to K nodes
+     *      5.  Repeat 3-4 until we generate a cycle or solution
+     *      6.  If solution better than previous, update solution
+     *      7.  If we have a cycle, pick the least expensive path back
+     *          to the last visited K-node
+     *      8.  Repeat 3-7 until all nodes and edges have been visited
      *
      *===============================================================*/
     private static int bartMont(Graph g, ArrayList<Vertex> targets)
     {
         HashMap<Vertex, Integer> costs = new HashMap<Vertex,Integer>();
 
+        // Store the sums in a minHeap by sum
+        // FIX BELOW
         Iterator<Vertex> itr = g.vertexIterator();
+
+        // 1.
 
         while (itr.hasNext())
         {
@@ -68,6 +81,7 @@ public class SteinerTree
                 System.out.println("vertex "+v+", cost "+sum);
             }    
         }
+
         return 0;
     }
 
