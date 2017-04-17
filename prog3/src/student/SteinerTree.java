@@ -3,6 +3,7 @@ package student;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Random;
 
 import graph.*;
@@ -43,13 +44,42 @@ public class SteinerTree
      * 
      * Returns: int - the total cost of our Steiner Tree
      *
-     * Description: 
+     * Description: The algorithm works as follows:
+     *      1.  Calculate the neighbor edge cost sums for each 
+     *          non-target vertex.
      *
      *===============================================================*/
     private static int bartMont(Graph g, ArrayList<Vertex> targets)
     {
+        HashMap<Vertex, Integer> costs = new HashMap<Vertex,Integer>();
+
+        Iterator<Vertex> itr = g.vertexIterator();
+
+        while (itr.hasNext())
+        {
+            Vertex v = itr.next();
+            if (!isTarget(v, targets)) 
+            {
+                int sum = 0;
+                for (Edge e : v)
+                    sum += e.getWeight();
+
+                costs.put(v,sum);
+                System.out.println("vertex "+v+", cost "+sum);
+            }    
+        }
         return 0;
     }
+
+    private static boolean isTarget(Vertex v, ArrayList<Vertex> targets)
+    {
+        for (Vertex t : targets)
+            if (t.equals(v))
+                return true;
+
+        return false;
+    }
+
 
 	// Simple example routine that just does a depth first search until 
     // it reaches all of the target vertices.
