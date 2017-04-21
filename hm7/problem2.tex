@@ -1,6 +1,10 @@
 \section*{Problem 2}
-
-\begin{center}
+In this problem we are asked to explain why this flow is valid, although
+not a maximum flow.
+\\
+\\
+\begin{figure}
+    \centering
     \begin{tikzpicture}
        \node[red node] (1) {S};
        \node[green node] (2) [above right = 2cm of 1]{A};
@@ -32,4 +36,10 @@
        \draw[largeptr]
        (5) -- (2) node[midway, above]{4/4};
     \end{tikzpicture}
-\end{center}
+    \caption{Flow graph with non-maximal flow}
+    \label{base-flow}
+\end{figure}
+%
+This flow is not optimal as we have not saturated any of the forward
+edges, and there is a backwards edge, namely \textbf{A --- B}, which 
+has been saturated even though it should not have any flow whatsoever.
