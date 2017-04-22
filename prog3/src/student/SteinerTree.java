@@ -70,8 +70,7 @@ public class SteinerTree {
 					continue;
 				}
 				// Else..
-				for (; first.getPrior() != null; first = first.getPrior())
-					;
+				for (; first.getPrior() != null; first = first.getPrior());
 
 				// Find all candidates to follow up on.
 				Integer occurCurr = numVertOccurences.get(curr.getVert()),
