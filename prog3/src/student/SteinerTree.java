@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.PriorityQueue;
 
 import graph.*;
 import steinerTree.SteinerTreeTester;
@@ -39,48 +40,98 @@ import steinerTree.SteinerTreeTester;
 
 public class SteinerTree {
 
-	// Simple example routine that just does a depth first search until
-	// it reaches all of the target vertices.
-	public static int steinerTree(Graph g, ArrayList<Vertex> targets) {
+	public static int steinerTree(Graph g, ArrayList<Vertex> targets) 
+    {
 		HashSet<Vertex> targetSet = new HashSet<Vertex>();
 		HashSet<WeightedVertex> selectedSet = new HashSet<WeightedVertex>();
 		
 		targetSet.addAll(targets);
 		ArrayList<WeightedVertex> bestAnswers = new ArrayList<WeightedVertex>();
 		
-		for(Vertex target : targets){
+		for(Vertex target : targets)
+        {
 			ArrayList<WeightedVertex> paths = shortestPaths(g, target);
-			for(WeightedVertex curr : paths){
-				bestAnswers.add(new WeightedVertex(curr.getVert(), curr.getWeight(), target));
+			for(WeightedVertex curr : paths)
+            {
+				bestAnswers.add(new WeightedVertex(curr.getVert(), 
+                                                   curr.getWeight(), target));
 			}
 		}
+
 		Collections.sort(bestAnswers);
-		for(WeightedVertex curr : bestAnswers){
-			if(targetSet.contains(curr.getVert()) && curr.getWeight() != 0){
+		for(WeightedVertex curr : bestAnswers)
+        {
+			if(targetSet.contains(curr.getVert()) && curr.getWeight() != 0)
+            {
 				System.out.println(curr);
 			}
 		}
+
 		return 0;
 	}
-	
-	public static ArrayList<WeightedVertex> shortestPaths(Graph g, Vertex start){
+
+    /*=========================================================================
+     *
+     * Method name: pathFinder
+     *
+     * Parameters: Graph g - the graph we are analyzing
+     *             ArrayList<Vertex> targets - the target verticies
+     *
+     * Returns: int - the cost of the final Stiener tree
+     *
+     * Description: Find the optimal Stiener tree between the target nodes 
+     *              within this grpah.
+     *
+     *=======================================================================*/
+    private static int pathFinder(Graph g, ArrayList<Vertex> targerts)
+    {
+        /* First, we iteratively run Dijkstra's algorithm starting at each one
+         * of the target nodes, and find the shortest path between any two 
+         * Target nodes. */
+        
+
+        return 0;
+    }
+
+    /*=========================================================================
+     *
+     * Method Name: shortestPaths
+     *
+     * Parameters: Graph g      - the graph we are considering
+     *             Vertex start - the starting vertex
+     *
+     * Returns: ArrayList<WeightedVertex> - reachable paths from starting vertex
+     *
+     * Description: This method is an implementation of Dijkstra's shortest 
+     *              paths algorithm.
+     *=======================================================================*/
+    private static ArrayList<WeightedVertex> shortestPaths(Graph g, 
+                                                           Vertex start)
+    {
 		ArrayList<WeightedVertex> outputs = new ArrayList<WeightedVertex>();
 		HashSet<Vertex> addedToQueue = new HashSet<Vertex>();
-		PriorityQueue<WeightedVertex> heap = new PriorityQueue<WeightedVertex>();
+		PriorityQueue<WeightedVertex> heap = 
+            new PriorityQueue<WeightedVertex>();
 		heap.add(new WeightedVertex(start, 0, null));
 		addedToQueue.add(start);
 		
-        while (!heap.isEmpty()) {
+        while (!heap.isEmpty()) 
+        {
         	WeightedVertex prior = heap.poll();
         	outputs.add(prior);
             
             Iterator<Edge> itr = prior.getVert().edgeIterator();
-            while(itr.hasNext()){
+            while(itr.hasNext())
+            {
             	Edge currEdge = itr.next();
-            	Vertex vertToAdd = currEdge.getOppositeVertexOf(prior.getVert());
-            	if(!addedToQueue.contains(vertToAdd)){
+            	Vertex vertToAdd = 
+                    currEdge.getOppositeVertexOf(prior.getVert());
+            	if(!addedToQueue.contains(vertToAdd))
+                {
             		addedToQueue.add(vertToAdd);
-            		heap.add(new WeightedVertex(vertToAdd, prior.getWeight() + currEdge.getWeight(), prior.getVert()));
+            		heap.add(new WeightedVertex(vertToAdd, 
+                                prior.getWeight() + currEdge.getWeight(), 
+                             prior.getVert()));
             	}
             }
         }

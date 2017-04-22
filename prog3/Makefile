@@ -1,14 +1,16 @@
 #
 # Makefile for the third program
 #
-CP=jars/Graph.jar:jars/SteinerTreeTester.jar 
+CP=jars/Graph.jar:jars/SteinerTreeTester.jar:bin/
 RUN_CP=SteinerTreeTester.jar:student.jar:Graph.jar
 build:
+	javac -cp $(CP) -d bin src/student/WeightedVertex.java
 	javac -cp $(CP) -d bin src/student/SteinerTree.java
 	cd bin; \
 	jar cf ../jars/student.jar student
 run:
 	cd jars; \
-	java -cp $(RUN_CP) steinerTree.SteinerTreeTester
-test:
-	echo "Testing"
+	java -cp $(RUN_CP) steinerTree.SteinerTreeTester 
+test1:
+	cd jars; \
+	java -cp $(RUN_CP) steinerTree.SteinerTreeTester test1.txt
