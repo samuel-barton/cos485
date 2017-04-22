@@ -3,9 +3,10 @@ package student;
 import graph.Vertex;
 
 public class WeightedVertex implements Comparable<WeightedVertex>{
-	private Vertex vert, prior;
+	private Vertex vert;
+	private WeightedVertex prior;
 	private int weight;
-	public WeightedVertex(Vertex vert, int weight, Vertex priorVertex){
+	public WeightedVertex(Vertex vert, int weight, WeightedVertex priorVertex){
 		this.setWeight(weight);
 		this.setVert(vert);
 		this.setPrior(priorVertex);
@@ -29,10 +30,10 @@ public class WeightedVertex implements Comparable<WeightedVertex>{
 	public String toString(){
 		return "(" + vert.getLabel() + ", " + weight + ". Came from " + prior + ")";
 	}
-	public Vertex getPrior() {
+	public WeightedVertex getPrior() {
 		return prior;
 	}
-	public void setPrior(Vertex prior) {
+	public void setPrior(WeightedVertex prior) {
 		this.prior = prior;
 	}
 }
