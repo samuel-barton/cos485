@@ -1,6 +1,9 @@
 package student;
 
 import graph.Vertex;
+import graph.Edge;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class WeightedVertex implements Comparable<WeightedVertex>{
 	private Vertex vert;
@@ -35,5 +38,26 @@ public class WeightedVertex implements Comparable<WeightedVertex>{
 	}
 	public void setPrior(WeightedVertex prior) {
 		this.prior = prior;
+	}
+	public static ArrayList<Edge> getPath(WeightedVertex vert) {
+		ArrayList<Edge> pathEdges = new ArrayList<>();
+		WeightedVertex prior = vert.getPrior();
+		Vertex start = vert.getVert();
+
+		for (; prior != null; prior = prior.getPrior()) {
+			// Find the edge going between the current edge and the prior.
+			Iterator<Edge> itr = prior.getVert().iterator();
+			while (itr.hasNext()) {
+				Edge currEdge = itr.next();
+				if (currEdge.getOppositeVertexOf(prior.getVert()).equals(start)) 
+                {
+					// Found a match.
+					pathEdges.add(currEdge);
+					break;
+				}
+			}
+			start = prior.getVert();
+		}
+		return pathEdges;
 	}
 }

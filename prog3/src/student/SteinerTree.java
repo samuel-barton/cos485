@@ -38,31 +38,11 @@ import steinerTree.SteinerTreeTester;
  *      the graph for these vertices.  
  */
 
-public class SteinerTree {
-
-    private class Path
-    {
-        public WeightedVertex start;
-        public WeightedVertex end;
-        public ArrayList<WeightedVertex> intermediates;
-
-        public Path(WeightedVertex s, 
-                    WeightedVertex e, 
-                    ArrayList<WeightedVertex> i)
-        {
-            start = s;
-            end = e;
-            intermediates = i;
-        }
-    }
-
+public class SteinerTree 
+{
 	public static int steinerTree(Graph g, ArrayList<Vertex> targets) 
     {
 		return pathFinder(g, targets);
-	}
-	
-	private static ArrayList<Edge> getPath(WeightedVertex vert){
-		return null;
 	}
 
     /*=========================================================================
@@ -87,7 +67,7 @@ public class SteinerTree {
 		HashSet<Vertex> targetSet = new HashSet<Vertex>();
 		targetSet.addAll(targets);
 
-        // set the value field for each edge to be the same as the edge weight
+        // set the value for each edge to be the same as the edge weight
         Iterator<Edge> itr = g.edgeIterator();
 
         Edge e;
@@ -97,10 +77,21 @@ public class SteinerTree {
             e.setValue(e.getWeight());
         }
 
-        // find the shortest path between black nodes    
-        WeightedVertex shortest = getShortestPath(targetSet, targets,g);
+        for (int i = 0; i < targets.size()-1; i++)
+        {
+            // find the shortest path between black nodes    
+            WeightedVertex shortest = getShortestPath(targetSet, targets,g);
+            System.out.println(shortest);
+            // set the edge weights to zero on shortest path
+            ArrayList<Edge> path_back = WeightedVertex.getPath(shortest);
 
-        // set the edge weights to zero on shortest path
+            for (Edge edge : path_back)
+            {
+                edge.setValue(0);
+                edge.setMark(1);
+            }
+        }
+
         
         return 0;
     }
@@ -141,11 +132,17 @@ public class SteinerTree {
             }
 
             Collections.sort(options);
-            short_paths.add(options.get(0));
+            WeightedVertex path = null;
+            for (int i = 0; i < options.size(); i++)
+            {
+                if ((path = options.get(i)).getWeight() != 0)
+                    break;
+            }
+
+            short_paths.add(path);
 		}
 
         Collections.sort(short_paths);
-
         return short_paths.get(0);
     }
 
