@@ -85,40 +85,68 @@ public class SteinerTree {
          * Target nodes. */
        
 		HashSet<Vertex> targetSet = new HashSet<Vertex>();
-
 		targetSet.addAll(targets);
-		
-		//for(Vertex target : targets)
-        //{
-    	ArrayList<WeightedVertex> paths = shortestPaths(g, targets.get(0));
 
-        ArrayList<WeightedVertex> intermediates = 
-            new ArrayList<WeightedVertex>();
+        // set the value field for each edge to be the same as the edge weight
+        Iterator<Edge> itr = g.edgeIterator();
 
-        // make a binary search version later
-        WeightedVertex t = null;
-        for (WeightedVertex path : paths)
+        Edge e;
+        while (itr.hasNext())
         {
-            t = path;
-            if (t.getVert().equals(targets.get(1)))
-                break;
+            e = itr.next();
+            e.setValue(e.getWeight());
         }
 
-        WeightedVertex current = t;
-        WeightedVertex prev = null;
-        while ((prev = current.getPrior()) != null)
-        {
-            intermediates.add(prev);
-            current = prev;
-        } 
+        // find the shortest path between black nodes    
+        WeightedVertex shortest = getShortestPath(targetSet, targets,g);
 
-        System.out.println("Starting vertex: "+t);
-        System.out.println(intermediates);
-        System.out.println("Ending vertex: "+current);
+        // set the edge weights to zero on shortest path
         
-		//}
-
         return 0;
+    }
+
+    /*==========================================================================
+     *
+     * Method name: getShortestPath
+     *
+     * Parameters: HashSet<Vertex> black_nodes - the set of target nodes
+     *             ArrayList<Vertex> targets - the list or target nodes
+     *
+     * Returns: WeightedVertex - the shortest path between two black nodes
+     *
+     * Description: This function determines the shortest path between two 
+     *              black nodes.
+     *
+     *=======================================================================*/
+    private static WeightedVertex getShortestPath(HashSet<Vertex> black_nodes, 
+                                                  ArrayList<Vertex> targets,
+                                                  Graph g)
+    {
+        ArrayList<WeightedVertex> short_paths = new ArrayList<>();    
+
+		for(Vertex target : targets)
+        {
+            ArrayList<WeightedVertex> paths = shortestPaths(g, target);
+
+            ArrayList<WeightedVertex> options = 
+                new ArrayList<WeightedVertex>();
+
+            for (WeightedVertex path : paths)
+            {
+                if (targets.contains(path.getVert()) && 
+                    !path.getVert().equals(target))
+                {
+                    options.add(path);
+                }
+            }
+
+            Collections.sort(options);
+            short_paths.add(options.get(0));
+		}
+
+        Collections.sort(short_paths);
+
+        return short_paths.get(0);
     }
 
 	/**
@@ -173,8 +201,8 @@ public class SteinerTree {
 					// current path so far, plus the cost of the edge to get
 					// from that path to here.
 					heap.add(new WeightedVertex(vertToAdd, 
-                                prior.getWeight() + currEdge.getWeight(), 
-                                prior.getVert()));
+                                prior.getWeight() + currEdge.getValue(), 
+                                prior));
 				}
 			}
 		}
