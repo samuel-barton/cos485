@@ -43,38 +43,81 @@ public class SteinerTree {
 	// it reaches all of the target vertices.
 	public static int steinerTree(Graph g, ArrayList<Vertex> targets) {
 		HashSet<Vertex> targetSet = new HashSet<>();
-		HashSet<Vertex> visitedSet = new HashSet<>();
+		HashMap<Vertex, Integer> numVertOccurences = new HashMap<>();
+		int sum = 0;
 
 		targetSet.addAll(targets);
-		ArrayList<WeightedVertex> bestAnswers = new ArrayList<WeightedVertex>();
+		ArrayList<WeightedVertex> bestAnswers;
 
-		for (Vertex target : targets) {
-			bestAnswers.addAll(shortestPaths(g, target));
+		// We can't change the weights, so we'll just use the field "value" as a
+		// substitute.
+		Iterator<Edge> edgeItr = g.edgeIterator();
+		while (edgeItr.hasNext()) {
+			Edge next = edgeItr.next();
+			next.setValue(next.getWeight());
 		}
-
-		Collections.sort(bestAnswers);
-		for (WeightedVertex curr : bestAnswers) {
-			// Find what's really first.
-			WeightedVertex first = curr.getPrior();
-			if(first == null){
-				continue;
+		for (int i = 0; i < targets.size(); i++) {
+			bestAnswers = new ArrayList<>();
+			for (Vertex target : targets) {
+				bestAnswers.addAll(shortestPaths(g, target));
 			}
-			// Else..
-			for (; first.getPrior() != null; first = first.getPrior());
-			
-			// Find all candidates to follow up on.
-			boolean goesFromKtoK = targetSet.contains(curr.getVert()) && targetSet.contains(first.getVert());
-			if (goesFromKtoK && !visitedSet.contains(first.getVert()) && curr.getWeight() != 0) {
-				visitedSet.add(curr.getVert());
 
-				System.out.println(curr);
+			Collections.sort(bestAnswers);
+			for (WeightedVertex curr : bestAnswers) {
+				// Find what's really first.
+				WeightedVertex first = curr.getPrior();
+				if (first == null || first.getWeight() == 0) {
+					continue;
+				}
+				// Else..
+				for (; first.getPrior() != null; first = first.getPrior())
+					;
+
+				// Find all candidates to follow up on.
+				Integer occurCurr = numVertOccurences.get(curr.getVert()),
+						occurFirst = numVertOccurences.get(first.getVert());
+				
+				if (targetSet.contains(curr.getVert()) && targetSet.contains(first.getVert())
+						&& (occurCurr == null || occurCurr < 2)
+						&& (occurFirst == null || occurFirst < 2)) {
+
+					occurCurr = (occurCurr == null) ? 1 : ++occurCurr;
+					occurFirst = (occurFirst == null) ? 1 : ++occurFirst;
+					numVertOccurences.put(curr.getVert(), occurCurr);
+					numVertOccurences.put(first.getVert(), occurFirst);
+					
+					for (Edge currEdge : getPath(curr)) {
+						sum += currEdge.getValue();
+						currEdge.setMark(1);
+						currEdge.setValue(0);
+					}
+					// Done, dealt with our solution.
+					break;
+				}
 			}
 		}
-		return 0;
+		return sum;
 	}
-	
-	private static ArrayList<Edge> getPath(WeightedVertex vert){
-		return null;
+
+	private static ArrayList<Edge> getPath(WeightedVertex vert) {
+		ArrayList<Edge> pathEdges = new ArrayList<>();
+		WeightedVertex prior = vert.getPrior();
+		Vertex start = vert.getVert();
+
+		for (; prior != null; prior = prior.getPrior()) {
+			// Find the edge going between the current edge and the prior.
+			Iterator<Edge> itr = prior.getVert().iterator();
+			while (itr.hasNext()) {
+				Edge currEdge = itr.next();
+				if (currEdge.getOppositeVertexOf(prior.getVert()).equals(start)) {
+					// Found a match.
+					pathEdges.add(currEdge);
+					break;
+				}
+			}
+			start = prior.getVert();
+		}
+		return pathEdges;
 	}
 
 	/**
@@ -122,7 +165,7 @@ public class SteinerTree {
 					// The cost of this vertex must be equal to the cost of the
 					// current path so far, plus the cost of the edge to get
 					// from that path to here.
-					heap.add(new WeightedVertex(vertToAdd, prior.getWeight() + currEdge.getWeight(), prior));
+					heap.add(new WeightedVertex(vertToAdd, prior.getWeight() + currEdge.getValue(), prior));
 				}
 			}
 		}
