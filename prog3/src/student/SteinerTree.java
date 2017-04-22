@@ -42,28 +42,39 @@ public class SteinerTree {
 	// Simple example routine that just does a depth first search until
 	// it reaches all of the target vertices.
 	public static int steinerTree(Graph g, ArrayList<Vertex> targets) {
-		HashSet<Vertex> targetSet = new HashSet<Vertex>();
-		HashSet<Vertex> visitedSet = new HashSet<Vertex>();
+		HashSet<Vertex> targetSet = new HashSet<>();
+		HashSet<Vertex> visitedSet = new HashSet<>();
 
 		targetSet.addAll(targets);
 		ArrayList<WeightedVertex> bestAnswers = new ArrayList<WeightedVertex>();
 
 		for (Vertex target : targets) {
-			ArrayList<WeightedVertex> paths = shortestPaths(g, target);
-			for (WeightedVertex curr : paths) {
-				bestAnswers.add(new WeightedVertex(curr.getVert(), curr.getWeight(), target));
-			}
+			bestAnswers.addAll(shortestPaths(g, target));
 		}
 
 		Collections.sort(bestAnswers);
 		for (WeightedVertex curr : bestAnswers) {
-			if (targetSet.contains(curr.getVert()) && !visitedSet.contains(curr.getPrior())
-					&& !visitedSet.contains(curr.getVert()) && curr.getWeight() != 0) {
+			// Find what's really first.
+			WeightedVertex first = curr.getPrior();
+			if(first == null){
+				continue;
+			}
+			// Else..
+			for (; first.getPrior() != null; first = first.getPrior());
+			
+			// Find all candidates to follow up on.
+			boolean goesFromKtoK = targetSet.contains(curr.getVert()) && targetSet.contains(first.getVert());
+			if (goesFromKtoK && !visitedSet.contains(first.getVert()) && curr.getWeight() != 0) {
 				visitedSet.add(curr.getVert());
+
 				System.out.println(curr);
 			}
 		}
 		return 0;
+	}
+	
+	private static ArrayList<Edge> getPath(WeightedVertex vert){
+		return null;
 	}
 
 	/**
@@ -81,9 +92,9 @@ public class SteinerTree {
 	 */
 	private static ArrayList<WeightedVertex> shortestPaths(Graph g, Vertex start) {
 		// Initialize storage that we'll need.
-		ArrayList<WeightedVertex> outputs = new ArrayList<WeightedVertex>();
+		ArrayList<WeightedVertex> outputs = new ArrayList<>();
 		HashSet<Vertex> addedToQueue = new HashSet<Vertex>();
-		PriorityQueue<WeightedVertex> heap = new PriorityQueue<WeightedVertex>();
+		PriorityQueue<WeightedVertex> heap = new PriorityQueue<>();
 
 		// Use the heap object to keep track of what we've dealt with.
 		// addedToQueue is a quick way of keeping track of what we've added over
@@ -111,7 +122,7 @@ public class SteinerTree {
 					// The cost of this vertex must be equal to the cost of the
 					// current path so far, plus the cost of the edge to get
 					// from that path to here.
-					heap.add(new WeightedVertex(vertToAdd, prior.getWeight() + currEdge.getWeight(), prior.getVert()));
+					heap.add(new WeightedVertex(vertToAdd, prior.getWeight() + currEdge.getWeight(), prior));
 				}
 			}
 		}
