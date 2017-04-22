@@ -140,12 +140,7 @@ public class SteinerTree {
 		// Initialize storage that we'll need.
 		ArrayList<WeightedVertex> outputs = new ArrayList<>();
 		HashSet<Vertex> addedToQueue = new HashSet<Vertex>();
-<<<<<<< HEAD
-		PriorityQueue<WeightedVertex> heap = 
-            new PriorityQueue<WeightedVertex>();
-=======
 		PriorityQueue<WeightedVertex> heap = new PriorityQueue<>();
->>>>>>> 63385fe2e2d9ad9cfb0f5731cc60b793b7f6a95a
 
 		// Use the heap object to keep track of what we've dealt with.
 		// addedToQueue is a quick way of keeping track of what we've added over
@@ -177,13 +172,9 @@ public class SteinerTree {
 					// The cost of this vertex must be equal to the cost of the
 					// current path so far, plus the cost of the edge to get
 					// from that path to here.
-<<<<<<< HEAD
 					heap.add(new WeightedVertex(vertToAdd, 
                                 prior.getWeight() + currEdge.getWeight(), 
                                 prior.getVert()));
-=======
-					heap.add(new WeightedVertex(vertToAdd, prior.getWeight() + currEdge.getWeight(), prior));
->>>>>>> 63385fe2e2d9ad9cfb0f5731cc60b793b7f6a95a
 				}
 			}
 		}
