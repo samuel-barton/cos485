@@ -80,6 +80,7 @@ public class SteinerTree
 			e.setValue(e.getWeight());
 		}
 
+        // Find a base solution
 		for (int i = 0; i < targets.size() - 1; i++) {
 			// find the shortest path between black nodes
 			WeightedVertex shortest = getShortestPath(targetSet, targets, g);
@@ -95,8 +96,103 @@ public class SteinerTree
 			SteinerTreeTester.show(g);
 		}
 
+        // improve the solution by removing the path to one black node and
+        // finding the minimum path to that node from the current solution
+        for (Vertex target : targets)
+            target.setValue(1);
+
+        for (Vertex target : targets)
+        {
+            // remove the path to this vertex
+            clearPath(target);
+            System.out.println(getShortestPath(targetSet, targets,g));
+        }
+
+        System.out.println("---------------------------------------------");
+        for (Vertex target : targets)
+        {
+            // remove the path to this vertex
+            clearPath(target);
+        }
+
 		return sum;
 	}
+
+    public static void clearPath(Vertex v)
+    {
+        System.out.println("starting " + v);
+        //v.setMark(2);
+        //removePath(v, null);
+        //v.setValue(v.getValue()+1);
+        removeP(v, null);
+    }
+
+    public static boolean removeP(Vertex v, Vertex p)
+    {
+        Vertex next_v = v;
+        for (Edge e : v)
+        {
+            if (e.getValue() == 0 && 
+                !e.getOppositeVertexOf(v).equals(p))
+            {
+                next_v = e.getOppositeVertexOf(v);
+                System.out.println("visiting "+next_v);
+                if (next_v.getMark() == 1)
+                {
+                    e.setValue(e.getWeight());
+                    System.out.println("ending " + next_v);
+                    return true;
+                }
+
+                if (removeP(next_v, v))
+                {
+                    e.setValue(e.getWeight());
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean removePath(Vertex v, Vertex p)
+    {
+        // find the path to the nearest unvisited black node
+        Vertex next_v;
+        for (Edge e : v)
+        {
+            // find the next edge in the path
+            if (e.getValue() == 0 && 
+                !e.getOppositeVertexOf(v).equals(p))
+            {
+                next_v = e.getOppositeVertexOf(v);
+                if (next_v.getMark() == 1 && 
+                    next_v.getValue() < usedEdges(next_v))
+                {
+                    next_v.setValue(next_v.getValue()+1);
+                    System.out.println("ending " + next_v);
+                    return true;
+                }
+                else if (next_v.getMark() == 2 && 
+                         next_v.getValue() < usedEdges(next_v))
+                {
+                    next_v.setValue(next_v.getValue()+1);
+                    System.out.println("ending " + next_v);
+                    return true;
+                }
+                else if (next_v.getMark() == 2)
+                {
+                    System.out.println("already visited " + next_v);
+                    continue;
+                }
+
+                if (removePath(next_v, v))
+                    return true;
+            }
+        }
+
+        return false;
+    }
 
 	/*=========================================================================
 	 * 
@@ -135,8 +231,6 @@ public class SteinerTree
             }
 
             Collections.sort(options);
-            for (WeightedVertex v : options)
-                System.out.println(v);
             WeightedVertex path = null;
             for (int i = 0; i < options.size(); i++)
             {
@@ -148,11 +242,9 @@ public class SteinerTree
 
                 	if(!hasCycle(g, path.getVert(), null))
                     {
-                        System.out.println("no cycle --- "+path);
                         path.replacePath(old_weights);
                 		break;
                 	}
-                    System.out.println("CYCLE --- "+path);
                     // set the path back to the way it was
                     path.replacePath(old_weights);
                 }
@@ -247,6 +339,18 @@ public class SteinerTree
 		return cycle;
 	}
 
+    public static int usedEdges(Vertex v)
+    {
+        int count = 0;
+        for (Edge e : v)
+        {
+            if (e.getValue() == 0)
+                count++;
+        }
+
+        return count;
+    }
+
     public static boolean vertexInPath(Vertex v)
     {
         for (Edge e : v)
@@ -265,13 +369,6 @@ public class SteinerTree
 		// iterate over all edges out of this vertex
 		for (Edge e : v) {
 			Vertex newv = e.getOppositeVertexOf(v);
-            System.out.println("mark: "+newv.getMark() + 
-               " !(" +newv.getLabel()+ " == "+
-               ((v != null) ? v.getLabel() : null)+
-               ") and edge value == 0: "+
-                (!newv.equals(parent) && e.getValue() == 0) +
-                " " + newv.getLabel()+" value == 1 " + (newv.getValue() == 1));
-
 			// If part of the selected path
 			if (vertexInPath(newv) &&
                     !newv.equals(parent) && e.getValue() == 0 &&
