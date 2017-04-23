@@ -77,7 +77,8 @@ public class SteinerTree
             e.setValue(e.getWeight());
         }
 
-        for (int i = 0; i < targets.size()-1; i++)
+        int sum = 0;
+        for (int i = 0; i < targets.size()-2; i++)
         {
             // find the shortest path between black nodes    
             WeightedVertex shortest = getShortestPath(targetSet, targets,g);
@@ -87,13 +88,14 @@ public class SteinerTree
 
             for (Edge edge : path_back)
             {
+                sum += edge.getValue();
                 edge.setValue(0);
                 edge.setMark(1);
             }
         }
 
         
-        return 0;
+        return sum;
     }
 
     /*==========================================================================
