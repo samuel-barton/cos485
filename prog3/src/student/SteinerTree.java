@@ -1,13 +1,10 @@
 package student;
 
-import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map.Entry;
+import java.util.PriorityQueue;
 
 import graph.*;
 import steinerTree.SteinerTreeTester;
@@ -38,86 +35,123 @@ import steinerTree.SteinerTreeTester;
  */
 
 public class SteinerTree {
-
-	// Simple example routine that just does a depth first search until
-	// it reaches all of the target vertices.
 	public static int steinerTree(Graph g, ArrayList<Vertex> targets) {
-		HashSet<Vertex> targetSet = new HashSet<>();
-		HashMap<Vertex, Integer> numVertOccurences = new HashMap<>();
+		return pathFinder(g, targets);
+	}
+
+	/*
+	 * =========================================================================
+	 *
+	 * Method name: pathFinder
+	 *
+	 * Parameters: Graph g - the graph we are analyzing
+	 * ArrayList<WeightedVertex> targets - the target verticies
+	 *
+	 * Returns: int - the cost of the final Stiener tree
+	 *
+	 * Description: Find the optimal Stiener tree between the target nodes
+	 * within this grpah.
+	 *
+	 * =======================================================================
+	 */
+	private static int pathFinder(Graph g, ArrayList<Vertex> targets) {
+		/*
+		 * First, we iteratively run Dijkstra's algorithm starting at each one
+		 * of the target nodes, and find the shortest path between any two
+		 * Target nodes.
+		 */
 		int sum = 0;
-
+		HashSet<Vertex> targetSet = new HashSet<Vertex>();
 		targetSet.addAll(targets);
-		ArrayList<WeightedVertex> bestAnswers;
 
-		// We can't change the weights, so we'll just use the field "value" as a
-		// substitute.
-		Iterator<Edge> edgeItr = g.edgeIterator();
-		while (edgeItr.hasNext()) {
-			Edge next = edgeItr.next();
-			next.setValue(next.getWeight());
+		// set the value for each edge to be the same as the edge weight
+		Iterator<Edge> itr = g.edgeIterator();
+
+		Edge e;
+		while (itr.hasNext()) {
+			e = itr.next();
+			e.setValue(e.getWeight());
 		}
-		for (int i = 0; i < targets.size(); i++) {
-			bestAnswers = new ArrayList<>();
-			for (Vertex target : targets) {
-				bestAnswers.addAll(shortestPaths(g, target));
+
+		for (int i = 0; i < targets.size() - 1; i++) {
+			// find the shortest path between black nodes
+			WeightedVertex shortest = getShortestPath(targetSet, targets, g);
+			// set the edge weights to zero on shortest path
+			ArrayList<Edge> path_back = WeightedVertex.getPath(shortest, 0);
+
+			for (Edge edge : path_back) {
+				sum += edge.getValue();
+				edge.setValue(0);
+				edge.setMark(1);
 			}
-
-			Collections.sort(bestAnswers);
-			for (WeightedVertex curr : bestAnswers) {
-				// Find what's really first.
-				WeightedVertex first = curr.getPrior();
-				if (first == null || first.getWeight() == 0) {
-					continue;
-				}
-				// Else..
-				for (; first.getPrior() != null; first = first.getPrior());
-
-				// Find all candidates to follow up on.
-				Integer occurCurr = numVertOccurences.get(curr.getVert()),
-						occurFirst = numVertOccurences.get(first.getVert());
-				
-				if (targetSet.contains(curr.getVert()) && targetSet.contains(first.getVert())
-						&& (occurCurr == null || occurCurr < 2)
-						&& (occurFirst == null || occurFirst < 2)) {
-
-					occurCurr = (occurCurr == null) ? 1 : ++occurCurr;
-					occurFirst = (occurFirst == null) ? 1 : ++occurFirst;
-					numVertOccurences.put(curr.getVert(), occurCurr);
-					numVertOccurences.put(first.getVert(), occurFirst);
-					
-					for (Edge currEdge : getPath(curr)) {
-						sum += currEdge.getValue();
-						currEdge.setMark(1);
-						currEdge.setValue(0);
-					}
-					// Done, dealt with our solution.
-					break;
-				}
-			}
+			SteinerTreeTester.show(g);
 		}
+
 		return sum;
 	}
 
-	private static ArrayList<Edge> getPath(WeightedVertex vert) {
-		ArrayList<Edge> pathEdges = new ArrayList<>();
-		WeightedVertex prior = vert.getPrior();
-		Vertex start = vert.getVert();
+	/*
+	 * =========================================================================
+	 * =
+	 *
+	 * Method name: getShortestPath
+	 *
+	 * Parameters: HashSet<Vertex> black_nodes - the set of target nodes
+	 * ArrayList<Vertex> targets - the list or target nodes
+	 *
+	 * Returns: WeightedVertex - the shortest path between two black nodes
+	 *
+	 * Description: This function determines the shortest path between two black
+	 * nodes.
+	 *
+	 * =======================================================================
+	 */
+	private static WeightedVertex getShortestPath(HashSet<Vertex> black_nodes, 
+                                                  ArrayList<Vertex> targets,
+                                                  Graph g)
+    {
+        ArrayList<WeightedVertex> short_paths = new ArrayList<>();    
 
-		for (; prior != null; prior = prior.getPrior()) {
-			// Find the edge going between the current edge and the prior.
-			Iterator<Edge> itr = prior.getVert().iterator();
-			while (itr.hasNext()) {
-				Edge currEdge = itr.next();
-				if (currEdge.getOppositeVertexOf(prior.getVert()).equals(start)) {
-					// Found a match.
-					pathEdges.add(currEdge);
-					break;
-				}
-			}
-			start = prior.getVert();
+		for(Vertex target : targets)
+        {
+            ArrayList<WeightedVertex> paths = shortestPaths(g, target);
+
+            ArrayList<WeightedVertex> options = 
+                new ArrayList<WeightedVertex>();
+
+            for (WeightedVertex path : paths)
+            {
+                if (targets.contains(path.getVert()) && 
+                    !path.getVert().equals(target))
+                {
+                    options.add(path);
+                }
+            }
+
+            Collections.sort(options);
+            WeightedVertex path = null;
+            for (int i = 0; i < options.size(); i++)
+            {
+                if ((path = options.get(i)).getWeight() != 0){
+                	// We're in the door.
+                	WeightedVertex.getPath(path, 1);
+                	if(!hasCycle(g, path.getVert(), null)){
+                		WeightedVertex.getPath(path, -1);
+                		break;
+                	}
+                	WeightedVertex.getPath(path, -1);
+                }
+            }
+
+            short_paths.add(path);
 		}
-		return pathEdges;
-	}
+
+        Collections.sort(short_paths);
+        WeightedVertex selected = short_paths.get(0);
+        System.out.println("Selecting " + WeightedVertex.getPathOrigin(selected).getVert() + " -> " + selected.getVert());
+        WeightedVertex.getPath(selected, 1);
+        return selected;
+    }
 
 	/**
 	 * This method takes in a graph and a starting vertex and runs an O(V lg E)
@@ -181,43 +215,27 @@ public class SteinerTree {
 	// We exit the dfs early once all targets have been found.
 	//
 	// returns: the number of targets still remaining
-	public static int dfs(Graph g, Vertex v, int targetsRemaining) {
+	private static boolean hasCycle(Graph g, Vertex v, Vertex parent) {
+		boolean cycle = innerHasCycle(g, v, parent);
+		Iterator<Vertex> itr = g.vertexIterator();
+		while (itr.hasNext()) {
+			itr.next().setValue(0);
+		}
+		return cycle;
+	}
+
+	private static boolean innerHasCycle(Graph g, Vertex v, Vertex parent) {
 		// set value to indicated this vertex has been reached
 		v.setValue(1);
-		if (v.getMark() == 1)
-			targetsRemaining--; // we found a target vertex
-		if (targetsRemaining == 0)
-			return 0; // all targets found, we are done
 
 		// iterate over all edges out of this vertex
 		for (Edge e : v) {
 			Vertex newv = e.getOppositeVertexOf(v);
-			if (newv.getValue() == 0) { // found an unreached vertex
-				e.setMark(1); // we are considering
-				// color it green for animation)
-				e.setColor(Color.GREEN);
-				SteinerTreeTester.show(g);
-				// recursively search
-				int newRemaining = dfs(g, newv, targetsRemaining);
-				// did this edge lead to any new targets
-				if (newRemaining < targetsRemaining) {
-					targetsRemaining = newRemaining;
-					// mark this edge as part of solution
-					e.setMark(1);
-					// for animation show the graph at this point
-					SteinerTreeTester.show(g);
-				} else {
-					// unmark, this lead to nothing used
-					e.setMark(0);
-					e.setColor(Color.RED); // draw in red
-					SteinerTreeTester.show(g);
-				}
-				if (targetsRemaining == 0)
-					// all targets found, we are done
-					return 0;
+			// If part of the selected path
+			if (newv.getMark() > 0 && !newv.equals(parent) && (newv.getValue() == 1 || innerHasCycle(g, newv, v))) {
+				return true;
 			}
 		}
-
-		return targetsRemaining;
+		return false;
 	}
 }
