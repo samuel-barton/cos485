@@ -60,4 +60,20 @@ public class WeightedVertex implements Comparable<WeightedVertex>{
 		}
 		return pathEdges;
 	}
+
+    public ArrayList<Vertex> getEnds()
+    {
+        ArrayList<Vertex> ends = new ArrayList<Vertex>();
+
+        ends.add(vert);
+
+        WeightedVertex p = prior;
+
+        while (p.prior != null)
+            p = p.prior;
+
+        ends.add(p.vert);
+        
+        return ends;
+    }
 }

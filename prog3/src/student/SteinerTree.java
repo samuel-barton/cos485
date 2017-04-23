@@ -77,12 +77,16 @@ public class SteinerTree
             e.setValue(e.getWeight());
         }
 
+        HashSet<Vertex> cur_blacks = new HashSet<Vertex>();
         int sum = 0;
-        for (int i = 0; i < targets.size()-2; i++)
+        for (int i = 0; i < targets.size(); i++)
         {
             // find the shortest path between black nodes    
-            WeightedVertex shortest = getShortestPath(targetSet, targets,g);
-            System.out.println(shortest);
+            WeightedVertex shortest = getShortestPath(targetSet, targets, 
+                                                      cur_blacks, g);
+
+            cur_blacks.addAll(shortest.getEnds());
+
             // set the edge weights to zero on shortest path
             ArrayList<Edge> path_back = WeightedVertex.getPath(shortest);
 
@@ -93,12 +97,11 @@ public class SteinerTree
                 edge.setMark(1);
             }
         }
-
         
         return sum;
     }
 
-    /*==========================================================================
+    /*=========================================================================
      *
      * Method name: getShortestPath
      *
@@ -113,6 +116,7 @@ public class SteinerTree
      *=======================================================================*/
     private static WeightedVertex getShortestPath(HashSet<Vertex> black_nodes, 
                                                   ArrayList<Vertex> targets,
+                                                  HashSet<Vertex> used_black_nodes,
                                                   Graph g)
     {
         ArrayList<WeightedVertex> short_paths = new ArrayList<>();    
@@ -145,6 +149,20 @@ public class SteinerTree
 		}
 
         Collections.sort(short_paths);
+
+/*
+        WeightedVertex result_path = null;
+        for (int i = 0; i < short_paths.size(); i++)
+        {
+            result_path = short_paths.get(i);
+            ArrayList<Vertex> ends = result_path.getEnds();
+
+            if (!(used_black_nodes.contains(ends.get(0)) && 
+                  used_black_nodes.contains(ends.get(1))))
+                break;
+        }
+        return result_path;
+*/
         return short_paths.get(0);
     }
 
