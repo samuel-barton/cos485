@@ -2,6 +2,7 @@ package student;
 
 import graph.Vertex;
 import graph.Edge;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -40,32 +41,72 @@ public class WeightedVertex implements Comparable<WeightedVertex>{
 		this.prior = prior;
 	}
 	
-	// Can have an increment of 0 - no increment.
-	// 1 - found a new path, want to reflect that
-	// -1 - that new path was bad, so go along and undo that offset.
-	public static ArrayList<Edge> getPath(WeightedVertex vert, int increment) {
-		ArrayList<Edge> pathEdges = new ArrayList<>();
-		WeightedVertex prior = vert.getPrior();
-		Vertex start = vert.getVert();
-		
-		vert.getVert().setMark(vert.getVert().getMark() + increment);
-		for (; prior != null; prior = prior.getPrior()) {
-			// Find the edge going between the current edge and the prior.
-			Iterator<Edge> itr = prior.getVert().iterator();
-			while (itr.hasNext()) {
-				Edge currEdge = itr.next();
-				if (currEdge.getOppositeVertexOf(prior.getVert()).equals(start)) 
+    public ArrayList<Edge> getPath()
+    {
+        ArrayList<Edge> path_back = new ArrayList<Edge>();
+		Vertex start = this.vert;
+		WeightedVertex p = this.prior;
+		for (; p != null; p = p.prior)
+        {
+			Iterator<Edge> itr = p.getVert().iterator();
+			while (itr.hasNext()) 
+            {
+                Edge curr_edge = itr.next();
+				if (curr_edge.getOppositeVertexOf(p.getVert()).equals(start)) 
                 {
-					// Found a match.
-					prior.getVert().setMark(prior.getVert().getMark() + increment);
-					pathEdges.add(currEdge);
-					break;
-				}
-			}
-			start = prior.getVert();
-		}
-		return pathEdges;
-	}
+                    // edge is in path
+                    path_back.add(curr_edge);
+                    break;
+                }
+            }
+            start = p.vert;
+        }
+    
+        return path_back;    
+    }
+
+    public void zeroPath()
+    {
+		Vertex start = this.vert;
+		WeightedVertex p = this.prior;
+		for (; p != null; p = p.prior)
+        {
+			Iterator<Edge> itr = p.getVert().iterator();
+			while (itr.hasNext()) 
+            {
+                Edge curr_edge = itr.next();
+				if (curr_edge.getOppositeVertexOf(p.getVert()).equals(start)) 
+                {
+                    // edge is in path
+                    curr_edge.setValue(0);
+                    break;
+                }
+            }
+            start = p.vert;
+        }
+    }
+
+    public void replacePath(HashMap<Integer, Integer> old_weights)
+    {
+		Vertex start = this.vert;
+		WeightedVertex p = this.prior;
+		for (; p != null; p = p.prior)
+        {
+			Iterator<Edge> itr = p.getVert().iterator();
+			while (itr.hasNext()) 
+            {
+                Edge curr_edge = itr.next();
+				if (curr_edge.getOppositeVertexOf(p.getVert()).equals(start)) 
+                {
+                    // edge is in path
+                    if (!old_weights.containsKey(curr_edge.getId()))
+                        curr_edge.setValue(curr_edge.getWeight());
+                    break;
+                }
+            }
+            start = p.vert;
+        }
+    }
 
     public ArrayList<Vertex> getEnds()
     {

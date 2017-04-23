@@ -20,3 +20,6 @@ test2:
 test3:
 	cd jars; \
 	java -cp $(RUN_CP) steinerTree.SteinerTreeTester test3.txt
+test4:
+	cd jars; \
+	java -cp $(RUN_CP) steinerTree.SteinerTreeTester test4.txt
