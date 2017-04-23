@@ -96,6 +96,9 @@ public class SteinerTree
 			SteinerTreeTester.show(g);
 		}
 
+        HashMap<Integer,Integer> clearing_search_space = 
+            new HashMap<>(old_weights);
+
         // improve the solution by removing the path to one black node and
         // finding the minimum path to that node from the current solution
         for (Vertex target : targets)
@@ -104,35 +107,41 @@ public class SteinerTree
         for (Vertex target : targets)
         {
             // remove the path to this vertex
-            clearPath(target);
-            System.out.println(getShortestPath(targetSet, targets,g));
+            clearPath(target, clearing_search_space);
+            WeightedVertex target_path = shortestPathTo(g, target, targetSet);
+            System.out.println(target_path);
+			ArrayList<Edge> path_back = target_path.getPath();
+            for (Edge edge : path_back)
+            {
+                edge.setValue(0);
+				edge.setMark(1);
+            }
+			SteinerTreeTester.show(g);
         }
-
+/*
         System.out.println("---------------------------------------------");
         for (Vertex target : targets)
         {
             // remove the path to this vertex
             clearPath(target);
         }
-
+*/
 		return sum;
 	}
 
-    public static void clearPath(Vertex v)
+    public static void clearPath(Vertex v, HashMap<Integer, Integer> space)
     {
         System.out.println("starting " + v);
-        //v.setMark(2);
-        //removePath(v, null);
-        //v.setValue(v.getValue()+1);
-        removeP(v, null);
+        removeP(v, null, space);
     }
 
-    public static boolean removeP(Vertex v, Vertex p)
+    public static boolean removeP(Vertex v, Vertex p, 
+            HashMap<Integer, Integer> space)
     {
         Vertex next_v = v;
         for (Edge e : v)
         {
-            if (e.getValue() == 0 && 
+            if (space.containsKey(e.getId()) && 
                 !e.getOppositeVertexOf(v).equals(p))
             {
                 next_v = e.getOppositeVertexOf(v);
@@ -140,11 +149,13 @@ public class SteinerTree
                 if (next_v.getMark() == 1)
                 {
                     e.setValue(e.getWeight());
+                    e.setMark(0);
+                    space.remove(e.getId());
                     System.out.println("ending " + next_v);
                     return true;
                 }
 
-                if (removeP(next_v, v))
+                if (removeP(next_v, v, space))
                 {
                     e.setValue(e.getWeight());
                     return true;
@@ -259,6 +270,27 @@ public class SteinerTree
         System.out.println("Selecting " + selected);
         return selected;
     }
+
+    private static WeightedVertex shortestPathTo(Graph g, Vertex start,
+                                                 HashSet<Vertex> targets)
+    {
+        ArrayList<WeightedVertex> paths = shortestPaths(g, start);
+
+        Collections.sort(paths);
+
+        for (WeightedVertex path : paths)
+        {
+            if (targets.contains(path.getVert()) && 
+                !path.getVert().equals(start) && path.getWeight() > 0)
+            {
+                return path;
+            }
+        }
+
+        return null;
+    }
+            
+
 
 	/**
 	 * This method takes in a graph and a starting vertex and runs an O(V lg E)
