@@ -40,10 +40,10 @@ final flow of the graph.
        (5) -- (2) node[midway, above]{0/4};
        
        \node[anchor=east] at (7.5,-2) (init) {};
-       \node[anchor=east] at (5,-2) (prior) {};
-       \node[anchor=east] at (3,0) (start) {};
-       \node[anchor=west] at (3,3) (end) {};
-       \draw (start) edge[out=90,in=0, densely dotted, ->] (end) edge[out=-90,in=90, densely dotted, ->] (init);
+       \node[anchor=east] at (2,0) (start) {};
+       \node[] at (3.5,3) (end) {};
+       \draw (start) edge[out=90,in=-90, densely dotted, ->, ultra thick] (end) edge[out=-90,in=90, densely dotted, ultra thick, ->] (init);
     \end{tikzpicture}
+    \newline
     As demonstrated above, the minimum possible cut is $18$.
 \end{center}
