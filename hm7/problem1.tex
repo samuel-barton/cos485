@@ -4,10 +4,17 @@ In this problem we categorize the following sorting algorithms into the
 various genres of algorithms discussed in this course.
 \\
 \\
+By definition, iterative improvement gradually improves an initial solution.
+Thus it is impossible for a sorting algorithm to be an iterative improvement 
+algorithm as a list is either sorted or unsorted. Once there is a solution,  no
+improvements can be made on it.
+\\
+\\
 \begin{tabular}{l c p{6cm}}
-    \textbf{Algorithm} & \textbf{Technique} & \textbf{Justification} \\
-    Insertion sort & Iterative Improvement & Go through each element starting at position 0. Shift all of the elements greater than the current one to the left.\\
-    Selection sort & Greedy & Find the minimum value, swap it with the item at position 0.\\
+        \textbf{Algorithm} & \textbf{Technique} & \textbf{Justification} \\
+        \hline
+    Insertion sort & Greedy & Go through each element starting at position 0. Shift all of the elements greater than the current one to the left.\\
+    Selection sort & Greedy & Find the smallest item in the unsorted part of the list and append it to the end of the sorted part. \\
     Bubble sort & Greedy & If the next value is smaller than the current one, swap them.\\
     Quicksort & Divide and Conquer & Divide the problem size recursively, sort at the bottom, then sort on your way up. Note that Quicksort \textit{can} be implemented with a randomized partition.\\
     Merge sort & Divide and Conquer & Divide the problem size recursively, sort at the bottom, then sort on your way up.\\

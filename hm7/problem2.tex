@@ -1,8 +1,6 @@
 \section*{Problem 2}
 In this problem we are asked to explain why this flow is valid, although
 not a maximum flow.
-\\
-\\
 \begin{figure}[h]
     \centering
     \begin{tikzpicture}
@@ -39,7 +37,10 @@ not a maximum flow.
     \caption{Flow graph with non-maximal flow}
     \label{base-flow}
 \end{figure}
-%
-This flow is not optimal as we have not saturated any of the forward
+\begin{flushleft}
+This flow is valid because the sum of the flow(s) into each node, besides the 
+source and sink nodes, match the sum of the flow(s) out;
+however this flow is not optimal as we have not saturated any of the forward
 edges, and there is a backwards edge, namely \textbf{A --- B}, which 
 has been saturated even though it should not have any flow whatsoever.
+\end{flushleft}
