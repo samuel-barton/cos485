@@ -1,0 +1,51 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\hypersetup{
+        colorlinks,
+        linkcolor={red!50!black},
+        citecolor={blue!50!black},
+        urlcolor={blue!80!black}
+}
+
+% Tikz stuff
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage{tikz-qtree-compat}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{arrows,decorations.markings}
+\usetikzlibrary{positioning}
+
+\tikzset{blue node/.style={circle,fill=blue!20,draw,minimum size=1cm,inner sep=0pt},}
+\tikzset{red node/.style={circle,fill=red!20,draw,minimum size=1cm,inner sep=0pt},}
+\tikzset{green node/.style={circle,fill=green!20,draw,minimum size=1cm,inner sep=0pt},}
+\tikzset{yellow node/.style={circle,fill=yellow!20,draw,minimum size=1cm,inner sep=0pt},}
+
+\tikzset{graph node/.style={circle,fill=orange!30,draw,minimum size=1cm,inner sep=0pt},}
+
+\tikzset{largeptr/.style={decoration={markings,mark=at position 1 with %
+    {\arrow[scale=3,>=stealth]{>}}},postaction={decorate}}}
+
+% Special chars
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor} 
+
+\title{COS 485 --- Homework 8}
+
+\author{Samuel Barton \and Benjamin Montgomery}
+
+\date{May 3rd, 2017}
+
+\begin{document}
+
+\maketitle
+\input{problem1}
+\input{problem2}
+\input{problem3}
+\input{problem4}
+
+\end{document}
