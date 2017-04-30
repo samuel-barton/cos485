@@ -1,0 +1,22 @@
+\section*{Problem 7}
+
+In this problem we are asked to find a seating arrangement for 150 people at a 
+round table such that no two people who dislike one another are forced to sit
+adjacet to one another.
+\\
+\\
+For each guest, we know the list of people they quarrel with. Thus, we can 
+construct a graph where each node is a person on the guest list, and each edge
+represets a person they do not quarrel with. We can determine the edges out of
+each node by subtracting the list of people that the person the node represents
+quarrels with from the guest list.
+\\
+\\
+With this graph constructed, we then apply the algorithm for the 
+\textit{Hamiltonian Circuit Problem} to find a circuit of the graph such that
+each person is sitting next to someone they do not quarrel with.
+\\
+\\
+Note: it is possible that there is no Hamiltonian Circuit for the graph, in
+that case there is no seating arrangement where no two people who quarrel will
+sit adjacent to one another. 

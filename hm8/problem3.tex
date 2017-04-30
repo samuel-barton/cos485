@@ -1,11 +1,24 @@
 \section*{Problem 3}
 
 It is stated that both problem $A$ and problem $B$ are decision problems such that $A \propto B$. It is also stated that $A$ is an NP-complete problem. We are then asked if $B$ is also $NP$-Complete.
+\\
+Let us define NP-hard and Turing Reducable
 
-We observe that $B$ has two possibilities:
-\begin{enumerate}
-    \item $B$ is in $P$. This means $A \propto_T B$, so $B$ is $NP$-hard. This means that $P = NP$, so $B$ is in $NP$.
-    \item $B$ is not in $P$. This means $B$ is at least in $NP$. It is stated all problems in $NP$ can be reduced to $NP$-hard problems.
-\end{enumerate}
+\begin{quote}
+    If a problem $A$ can be solved in polynomial time useing a hypothetical 
+    polynomial-time algorithm for problem $B$, then problem $A$ is 
+    polynomial-time Turing Reducable to problem $B$. We denote this
+    $A \propto_T B$.
+\end{quote}
 
-Both of the above indicate that $B$ is an $NP$-complete problem.
+\begin{quote}
+    A problem $B$ is called $NP$-hard if, for some NP-complete problem $A$,
+    $A \propto_T B$.
+\end{quote}
+
+Problem $B$ is either intractable, in $P$, or in $NP$. If $B$ is intractable, 
+then $B$ is not in NP. If $B$ is in NP, then B is an $NP$-hard problem by 
+definition. If, $B$ is in $P$, then $P = NP$ and $B$ is still an $NP$-hard
+problem by definition.
+
+Thus $B$ is an $NP$-hard problem.
