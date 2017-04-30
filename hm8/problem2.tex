@@ -1,11 +1,22 @@
 \section*{Problem 2}
 
-We are given two problems $A$, $B$, such that $A$ can be converted to $B$ in $t_n \in \Theta(n^3)$, meaning $A \propto B$ if the solution to $B$ has $t_n \in \Theta(n^b)$, a polynomial quantity. To bound the complexity of this solution, we will refer to the below proof:
+We are given two problems $A$, $B$, such that $A$ can be converted to $B$ in 
+$t_n \in \Theta(n^a)$, a polynomial quantity, meaning $A \propto B$ if the solution to $B$ has 
+$t_n \in \Theta(n^b)$, a polynomial quantity. To bound the complexity of this 
+solution, we will refer to the below proof:
 
 \begin{proof}
-Suppose we have an instance of problem $A$ that is of size $n$. Because at most there are $\Theta(n^3)$ steps in the transformation algorithm, and at worst the algorithm outputs a symbol at each step, the size of the instance of $B$ produced by the transformation is at most a quantity $s$ such that $s \in \Theta(n^3)$. When that instance is the input to the algorithm for $B$, this means there are at most $\Theta\left((n^3)^b\right)$ steps. Therefore, the maximum number of work required to transform the instance of problem $A$ to an instance of problem $B$ and then solve problem $B$ to get the correct answer for problem $A$ is at most
+Suppose we have an instance of problem $A$ that is of size $n$. Because at 
+most there are $\Theta(n^a)$ steps in the transformation algorithm, and at 
+worst the algorithm outputs a symbol at each step, the size of the instance 
+of $B$ produced by the transformation is at most a quantity $s$ such that 
+$s \in \Theta(n^a)$. When that instance is the input to the algorithm for $B$, 
+this means there are at most $\Theta\left((n^a)^b\right)$ steps. Therefore, 
+the maximum number of steps required to transform the instance of problem $A$ 
+to an instance of problem $B$ and then solve problem $B$ to get the correct 
+answer for problem $A$ is at most
 $$
-\Theta(n^3) + \Theta\left((n^3)^b\right)
+\Theta(n^a) + \Theta\left((n^a)^b\right)
 $$
 which is a polynomial in $n$.
 \end{proof}

@@ -1,7 +1,15 @@
 \section*{Problem 4}
 
 We are given a problem as follows, and asked to transform it into a known problem.
-\\
+\begin{quote}
 ``Given a list of n positive values, divide them into 2 sublists whose sums are as equal as possible.''
+\end{quote}
+This problem is most similar to bin packing. 
 \\
-This problem is the most similar to bin packing. In the stated problem, bin packing is a arbitrarily large list of values. It is also given $n$ possible bins that the optimal solution will fit into, along with additional bins that non-optimal solutions will overflow into. Given these bins, each having fixed capacities, it will find how to best pack the provided list of elements into these bins. If we set $n=2$, we now have the provided problem. 
+\\
+We set the number of bins $B$ to 2, and limit the capacities of each bin to 
+$\frac{S}{2}$ where $S$ is the sum of all of the $n$ positive values. Then the
+bin packing algorithm will run until the two bins are packed such that the
+sums of each bin are as close to $\frac{S}{2}$ as possible. Also, if the 
+capcacity forces bin packing to use a third bin, then up the capcity of the 
+two bins and try again.
