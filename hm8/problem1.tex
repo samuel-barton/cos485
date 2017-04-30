@@ -1,0 +1,27 @@
+\section*{Problem 1}
+
+In this problem, we are asked to classify the problem of finding the $n$th Fibonacci term, given the following categories:
+\begin{enumerate}
+    \item Problems Solvable in Polynomial Time
+    \item Problems Proven to be Intractable
+    \item Problems Not Proven to be Intractable, but Lack Existing Polynomial Solutions
+\end{enumerate}
+
+As noted in section 1.3 of our text, when we use a binary representation for the input problem size, a standard representation used when evaluating if a problem can be solved in polynomial time. This means the input size is $\floor{\lg n} + 1$.
+
+The Fibonacci sequence is defined by the homogeneous linear sequence defined as
+\begin{align*}
+    t_n &= t_{n-1} + t_{n-2}\\
+    t_1 &= 1\\
+    t_0 &= 0
+\end{align*}
+Solving,
+\begin{align*}
+    t_n &= r^n\\
+    t_n - t_{n-1} - t_{n-2} &= r^n - r^{n-1} - r^{n-2}\\
+\end{align*}  
+We note $t_n = r^n$ is a solution if $r$ is a root of $r^n - r^{n-1} - r^{n-2} = 0$. As
+\begin{align*}  
+    r^n - r^{n-1} - r^{n-2} &= r^{n-2}(r^2 - r - 1)\\
+\end{align*}
+the roots are $r = 0$ and the roots of $r^2 - r - 1 = 0$, which are $r = \dfrac{1}{2} \pm \dfrac{\sqrt{5}}{2}$. The solution $r = \dfrac{1}{2} - \dfrac{\sqrt{5}}{2}$ is trivial to dismiss, as it is a negative quantity. The solution $r = 0$ is also trivial to dismiss, as it would imply as we have two solutions, we may have $t_n = r^n = c_0\left(\dfrac{1}{2} + \dfrac{\sqrt{5}}{2}\right)^n + c_1(0)^n$ for arbitrary constants $c_0$ and $c_1$. This is strictly equivalent to $t_n = r^n \in \Theta\left(\dfrac{1}{2} + \dfrac{\sqrt{5}}{2}\right)^n$, which is an intractable quantity.
