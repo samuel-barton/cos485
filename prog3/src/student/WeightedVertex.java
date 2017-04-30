@@ -144,17 +144,6 @@ public class WeightedVertex implements Comparable<WeightedVertex>{
         }
     }
 
-    /*===========================================================================
-     *
-     * Method name: 
-     * 
-     * Parameters: 
-     * 
-     * Returns: 
-     *
-     * Description: 
-     *
-     *=========================================================================*/
     public ArrayList<Vertex> getEnds()
     {
         ArrayList<Vertex> ends = new ArrayList<Vertex>();
@@ -171,17 +160,6 @@ public class WeightedVertex implements Comparable<WeightedVertex>{
         return ends;
     }
 	
-    /*===========================================================================
-     *
-     * Method name: 
-     * 
-     * Parameters: 
-     * 
-     * Returns: 
-     *
-     * Description: 
-     *
-     *=========================================================================*/
 	public static WeightedVertex getPathOrigin(WeightedVertex vert){
 		if(vert != null){
 			for(; vert.getPrior() != null; vert = vert.getPrior());
