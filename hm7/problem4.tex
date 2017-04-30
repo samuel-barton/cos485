@@ -6,7 +6,7 @@ following minimum cut of forward paths. \textbf{A --- C},
 \textbf{E --- T} are all saturated forward paths. These paths span the
 graph and thus form a minimum cut. The sum of the flow of these three
 paths is 18, and the flow of the graph is now 18 as well. Below is the
-final flow of the graph.
+final flow of the graph. The dotted line shows the minimum cut.
 
 \begin{center}
     \begin{tikzpicture}
@@ -40,10 +40,10 @@ final flow of the graph.
        (5) -- (2) node[midway, above]{0/4};
        
        \node[anchor=east] at (7.5,-2) (init) {};
-       \node[anchor=east] at (5,-2) (prior) {};
-       \node[anchor=east] at (3,0) (start) {};
-       \node[anchor=west] at (3,3) (end) {};
-       \draw (start) edge[out=90,in=0, densely dotted, ->] (end) edge[out=-90,in=90, densely dotted, ->] (init);
+       \node[anchor=east] at (2,0) (start) {};
+       \node[] at (3.5,3) (end) {};
+       \draw (start) edge[out=90,in=-90, densely dotted, ->, ultra thick] (end) edge[out=-90,in=90, densely dotted, ultra thick, ->] (init);
     \end{tikzpicture}
+    \newline
     As demonstrated above, the minimum possible cut is $18$.
 \end{center}

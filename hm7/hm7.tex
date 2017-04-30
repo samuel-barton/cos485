@@ -23,15 +23,15 @@
 \tikzset{red node/.style={circle,fill=red!20,draw,minimum size=1cm,inner sep=0pt},}
 \tikzset{green node/.style={circle,fill=green!20,draw,minimum size=1cm,inner sep=0pt},}
 \tikzset{yellow node/.style={circle,fill=yellow!20,draw,minimum size=1cm,inner sep=0pt},}
-
 \tikzset{graph node/.style={circle,fill=orange!30,draw,minimum size=1cm,inner sep=0pt},}
-
 \tikzset{largeptr/.style={decoration={markings,mark=at position 1 with %
     {\arrow[scale=3,>=stealth]{>}}},postaction={decorate}}}
 
 % Special chars
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor} 
+
+\renewcommand{\arraystretch}{1.5}
 
 \title{COS 485 --- Homework 7}
 
@@ -51,5 +51,6 @@
 \input{problem4}
 \input{problem5}
 \input{problem6}
+\input{puzzle}
 
 \end{document}
