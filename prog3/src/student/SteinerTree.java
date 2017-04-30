@@ -252,165 +252,23 @@ public class SteinerTree
         System.out.println("TYLERS CODE IS DONE"); 
         for (Vertex v : targets)
         {
-            System.out.println("Starting at vertex: "+v);
-
-            ArrayList<Vertex> cycle = findCycle(g,v);
-            if (cycle != null)
-            {
-                for (Vertex v0 : cycle)
-                    System.out.println(v0);
+            if (resolveCycle(g,v))
                 break;
-            }
+        }
+        for (Vertex v : targets)
+        {
+            if (resolveCycle(g,v))
+                break;
+        }
+        for (Vertex v : targets)
+        {
+            if (resolveCycle(g,v))
+                break;
         }
 
         return sum;
     }
 
-    /*private static int pathFinder(Graph g, ArrayList<Vertex> targets) {
-        /*
-         * First, we iteratively run Dijkstra's algorithm starting at each one
-         * of the target nodes, and find the shortest path between any two
-         * Target nodes.
-         
-        int sum = 0;
-        HashSet<Vertex> targetSet = new HashSet<Vertex>();//we could just use array accessing
-        targetSet.addAll(targets);
-
-
-        // set the value for each edge to be the same as the edge weight
-        Iterator<Edge> itr = g.edgeIterator();
-
-        Edge e;
-        while (itr.hasNext()) {
-            e = itr.next();
-            e.setValue(e.getWeight());
-        }
-
-        // Find a base solution
-        boolean[] canVisit = new boolean[g.numVertices()];
-        for(int i = 0; i < g.numVertices(); i++)
-            canVisit[i] = true;
-        for (int i = 0; i < targets.size() - 1; i++) {
-            // find the shortest path between black nodes
-            WeightedVertex shortest = getShortestPath(targetSet, targets, g, canVisit);
-
-            // set the edge weights to zero on shortest path
-            ArrayList<Edge> path_back = shortest.getPath();
-            for (Edge edge : path_back) 
-            {
-                old_weights.put(edge.getId(), 0);
-                sum += edge.getValue();
-                edge.setValue(0);
-                //edge.setMark(1);
-            }
-
-            SteinerTreeTester.show(g);
-        }
-        Iterator<Vertex> itrv = g.vertexIterator();
-        Vertex[] vert = new Vertex[g.numVertices()];
-        while(itrv.hasNext())
-        {
-            Vertex v = itrv.next();
-            vert[v.getId()] = v;
-        }
-        //set up for the iterative improvement
-        int[] numberOfUsedEdges = new int[g.numVertices()];
-        int bestSolution = sum;
-        int tempSolution = 0;
-        HashSet<Vertex> usedVertices = new HashSet<Vertex>();
-        updateNumberOfConnections(numberOfUsedEdges, g, usedVertices);
-        int[] numberOfUsedEdgesTester = new int[g.numVertices()];
-        HashSet<Edge> usedEdges = new HashSet<Edge>();
-        Iterator<Edge> itre = g.edgeIterator();
-        while(itre.hasNext())
-        {
-            Edge e2 = itre.next();
-            if(e2.getValue() == 0)
-                usedEdges.add(e2);
-        }
-        //System.arraycopy(numberOfUsedEdges, 0, numberOfUsedEdgesTester, 0, g.numVertices());
-        //here is the iterative improvement bit prepare for loops
-        while(tempSolution < bestSolution)
-        {
-            tempSolution = bestSolution;//tempSolution is the sum of the edges in the current graph, this will change as we add and remove things
-            Iterator<Vertex> usedVItr = usedVertices.iterator();
-            while(usedVItr.hasNext())//iterate over the vertices
-            {
-                Vertex v0 = usedVItr.next();
-                if(targetSet.contains(v0))//don't remove target nodes
-                    continue;
-                canVisit[v0.getId()] = false;//this is the removal process, by throwing this flag we say that dijkstra cannot visit here
-                for(Edge eg : v0)
-                    if(eg.getValue() == 0)
-                        eg.setValue(Integer.MAX_VALUE);//set all of the removed vertices edges to -1 so that we can recognize which ones need to be reset later
-                //do the iterative shortest path algorithm
-                for (int i = 0; i < targets.size() - 1; i++)
-                {
-                    // find the shortest path between black nodes
-                    WeightedVertex shortest = getShortestPath(targetSet, targets, g, canVisit);
-
-                    // set the edge weights to zero on shortest path
-                    ArrayList<Edge> path_back = shortest.getPath();
-                    for (Edge edge : path_back) 
-                    {
-                        old_weights.put(edge.getId(), 0);
-                        tempSolution += edge.getValue();
-                        edge.setValue(0);
-                    }
-                }
-                Iterator<Vertex> connectionCounter = g.vertexIterator();//adjust the values of the numberOfUsedEdgesTester to
-                //reflect the number of links to that node(determined by how many edges are zero)
-                while(connectionCounter.hasNext())
-                {
-                    int count = 0;
-                    Vertex vName = connectionCounter.next();
-                    for(Edge eee : vName)
-                        if(eee.getValue() == 0)
-                            count++;
-                    numberOfUsedEdgesTester[vName.getId()] = count;
-                }
-                for(int i = 0; i < g.numVertices(); i++)
-                {
-                    tempSolution = betterTrimmer(tempSolution, numberOfUsedEdgesTester, i, vert, targetSet);
-                    System.out.println(tempSolution);
-                }
-               
-                //tempSolution = trimmer(tempSolution, numberOfUsedEdgesTester, vert, targetSet);
-                //envoke trimmer to modify our solution by removing white leaves as these will never be part of an optimal solution
-                canVisit[v0.getId()] = true;//allow our removed node to be considered in the future
-                if(tempSolution < bestSolution)//if we've bettered ourself then update best solution
-                {
-                    bestSolution = tempSolution;
-                    tempSolution = 0;
-                    System.arraycopy(numberOfUsedEdgesTester, 0, numberOfUsedEdges, 0, g.numVertices());
-                    for(Edge eee : v0)
-                        if(eee.getValue() == Integer.MAX_VALUE)//set all of the edges that were formally part of a solution with the removed node to their weight
-                            //since they are no longer part of a solution
-                            eee.setValue(eee.getWeight());
-                    break;//stop this pass of the vertex iteration to try our new set(also the iterator may have been invalidated by the removal of
-                    //successive white nodes that formed a chain that was not needed in our solution
-                }
-                //if we have reached this code then the answer we came up with by removing the vertex v0 did not improve our solution so reset everything
-                System.arraycopy(numberOfUsedEdges, 0, numberOfUsedEdgesTester, 0, g.numVertices());
-                for(Edge eee : v0)
-                    if(eee.getValue() == Integer.MAX_VALUE)
-                        eee.setValue(0);
-                tempSolution = bestSolution;
-            }
-
-        }
-        Iterator<Edge> someGoodName = g.edgeIterator();
-        
-        while(someGoodName.hasNext())
-        {
-            Edge anotherName = someGoodName.next();
-            if(anotherName.getValue() == 0)
-                anotherName.setMark(1);
-                //System.out.println(anotherName);
-        }
-
-        return sum;
-    }*/
     public static int betterTrimmer(int sum, int[] numberOfConnections, int index, Vertex[] v, HashSet<Vertex> targetNodes)
     {
         if(numberOfConnections[index] == 1 && !targetNodes.contains(v[index]))
@@ -586,9 +444,47 @@ public class SteinerTree
         return outputs;
     }
 
+    private static boolean resolveCycle(Graph g, Vertex v)
+    {
+        ArrayList<Vertex> verticies = findCycle(g,v);
+
+        if (verticies == null)
+            return false;
+
+        ArrayList<Edge> edges = getEdges(verticies);
+
+        for (Edge e : edges)
+            System.out.println(e);
+
+        Collections.sort(edges, new CmpEdge());
+
+        Edge e = edges.get(edges.size()-1);
+        e.setValue(e.getWeight());
+        e.setMark(0);
+        System.out.println("We removed "+e);
+
+        return true;
+    }
+
+
+    private static ArrayList<Edge> getEdges(ArrayList<Vertex> verticies)
+    {
+        HashSet<Vertex> magical_verticies = new HashSet<>(verticies);
+        ArrayList<Edge> edges = new ArrayList<Edge>();
+        for (Vertex v : verticies)
+        {
+            for (Edge e : v)
+                if (e.getValue() == 0 && magical_verticies.contains(e.getOppositeVertexOf(v)))
+                    edges.add(e);
+        }
+
+        return edges;
+    }
+
     private static ArrayList<Vertex> findCycle(Graph g, Vertex v)
     {
         ArrayList<Vertex> cycle = new ArrayList<Vertex>(); 
+        ArrayList<Vertex> actual_cycle = null;
 
         if (findInnerCycle(g,v,null,cycle))
         {
@@ -607,15 +503,23 @@ public class SteinerTree
                 cycle_index++;
             }
 
-            ArrayList<Vertex> actual_cycle = new ArrayList<Vertex>();
+            if (cycle_bound == null)
+                return null;   
+
+            actual_cycle = new ArrayList<Vertex>();
             for (int i = cycle_index-1; i > 0 && !cycle.get(i).equals(cycle_bound); i--)
                 actual_cycle.add(cycle.get(i));
-               
+            
             actual_cycle.add(cycle_bound); 
-            return actual_cycle;
         }
-        else
-            return null;
+
+        Iterator<Vertex> itr = g.vertexIterator();
+        while (itr.hasNext()) 
+        {
+            itr.next().setValue(0);
+        }
+
+        return actual_cycle;
     }
 
     private static boolean findInnerCycle(Graph g, Vertex v, Vertex parent, ArrayList<Vertex> cycle)
@@ -632,10 +536,10 @@ public class SteinerTree
                     (newv.getValue() == 1 || findInnerCycle(g, newv, v, cycle))) 
             {
                 cycle.add(newv);
-                System.out.println("At vertex: "+v+" accepted: "+newv);
+                //System.out.println("At vertex: "+v+" accepted: "+newv);
                 return true;
             }
-            System.out.println("At vertex: "+v+" rejected: "+newv);
+            //System.out.println("At vertex: "+v+" rejected: "+newv);
         }
         return false;
     }
@@ -717,6 +621,14 @@ public class SteinerTree
             System.out.println("At vertex: "+v+" rejected: "+newv);
         }
         return false;
+    }
+
+    private static class CmpEdge implements Comparator<Edge>
+    {
+        public int compare(Edge e1, Edge e2)
+        {
+            return e1.getWeight() - e2.getWeight();
+        }
     }
 
     private static class CmpVertex implements Comparator<Vertex>
