@@ -3,8 +3,10 @@ package student;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 import graph.*;
@@ -110,7 +112,8 @@ public class SteinerTree
         int[] numberOfUsedEdges = new int[g.numVertices()];
         int bestSolution = sum;
         int tempSolution = 0;
-        HashSet<Vertex> usedVertices = new HashSet<Vertex>();
+        CmpVertex cmp = new CmpVertex();
+        TreeSet<Vertex> usedVertices = new TreeSet<Vertex>(cmp);
         updateNumberOfConnections(numberOfUsedEdges, g, usedVertices);
         
         //System.out.println(usedVertices);
@@ -133,6 +136,7 @@ public class SteinerTree
             Iterator<Vertex> usedVItr = usedVertices.iterator();
             while(usedVItr.hasNext())
             {
+                System.out.println("--------------------------------------------------");
                 // Iterate through all the intermediates we used last time to get a solution.
                 // Throw them all out.
                 Vertex v0 = usedVItr.next();
@@ -231,8 +235,7 @@ public class SteinerTree
                 }
                 
                 //assert testingNumEdgesReset == numLinks;
-                tempSolution = bestSolution;
-                
+
             }     
             
         }
@@ -245,7 +248,21 @@ public class SteinerTree
             if(anotherName.getValue() == 0)
                 anotherName.setMark(1);
         }
-        
+   
+        System.out.println("TYLERS CODE IS DONE"); 
+        for (Vertex v : targets)
+        {
+            System.out.println("Starting at vertex: "+v);
+
+            ArrayList<Vertex> cycle = findCycle(g,v);
+            if (cycle != null)
+            {
+                for (Vertex v0 : cycle)
+                    System.out.println(v0);
+                break;
+            }
+        }
+
         return sum;
     }
 
@@ -404,6 +421,7 @@ public class SteinerTree
                 if(e.getValue() == 0)
                 {
                     e.setValue(e.getWeight());
+                    //System.out.println(e);
                     sum = betterTrimmer(sum-e.getWeight(),numberOfConnections, e.getOppositeVertexOf(v[index]).getId(), v, targetNodes);
                     break;
                 }
@@ -426,7 +444,7 @@ public class SteinerTree
             }
         }
     }
-    public static void updateNumberOfConnections(int[] numberOfUsedEdges, Graph g, HashSet<Vertex> UsedVertices)
+    public static void updateNumberOfConnections(int[] numberOfUsedEdges, Graph g, TreeSet<Vertex> UsedVertices)
     {//I was suppose to use this but I kept just writing this method instead
         Iterator<Vertex> vItr = g.vertexIterator();
         while(vItr.hasNext())
@@ -568,7 +586,59 @@ public class SteinerTree
         return outputs;
     }
 
+    private static ArrayList<Vertex> findCycle(Graph g, Vertex v)
+    {
+        ArrayList<Vertex> cycle = new ArrayList<Vertex>(); 
 
+        if (findInnerCycle(g,v,null,cycle))
+        {
+            Vertex cycle_bound = null;
+            int cycle_index = 0;
+            HashSet<Vertex> keys = new HashSet<>();
+            for (Vertex v0 : cycle)
+            {
+                if (!keys.contains(v0))
+                    keys.add(v0);
+                else
+                {
+                    cycle_bound = v0; 
+                    break;
+                }
+                cycle_index++;
+            }
+
+            ArrayList<Vertex> actual_cycle = new ArrayList<Vertex>();
+            for (int i = cycle_index-1; i > 0 && !cycle.get(i).equals(cycle_bound); i--)
+                actual_cycle.add(cycle.get(i));
+               
+            actual_cycle.add(cycle_bound); 
+            return actual_cycle;
+        }
+        else
+            return null;
+    }
+
+    private static boolean findInnerCycle(Graph g, Vertex v, Vertex parent, ArrayList<Vertex> cycle)
+    {
+        // set value to indicated this vertex has been reached
+        v.setValue(1);
+
+        // iterate over all edges out of this vertex
+        for (Edge e : v) {
+            Vertex newv = e.getOppositeVertexOf(v);
+            // If part of the selected path
+            if (vertexInPath(newv) &&
+                    !newv.equals(parent) && e.getValue() == 0 &&
+                    (newv.getValue() == 1 || findInnerCycle(g, newv, v, cycle))) 
+            {
+                cycle.add(newv);
+                System.out.println("At vertex: "+v+" accepted: "+newv);
+                return true;
+            }
+            System.out.println("At vertex: "+v+" rejected: "+newv);
+        }
+        return false;
+    }
 
     /**
      * This method takes in a graph and a starting vertex and runs an O(V lg E)
@@ -595,7 +665,8 @@ public class SteinerTree
     // We exit the dfs early once all targets have been found.
     //
     // returns: the number of targets still remaining
-    private static boolean hasCycle(Graph g, Vertex v, Vertex parent) {
+    private static boolean hasCycle(Graph g, Vertex v, Vertex parent) 
+    {
         boolean cycle = innerHasCycle(g, v, parent);
         Iterator<Vertex> itr = g.vertexIterator();
         while (itr.hasNext()) {
@@ -627,7 +698,8 @@ public class SteinerTree
         return false;
     }
 
-    private static boolean innerHasCycle(Graph g, Vertex v, Vertex parent) {
+    private static boolean innerHasCycle(Graph g, Vertex v, Vertex parent) 
+    {
         // set value to indicated this vertex has been reached
         v.setValue(1);
 
@@ -637,10 +709,22 @@ public class SteinerTree
             // If part of the selected path
             if (vertexInPath(newv) &&
                     !newv.equals(parent) && e.getValue() == 0 &&
-                    (newv.getValue() == 1 || innerHasCycle(g, newv, v))) {
+                    (newv.getValue() == 1 || innerHasCycle(g, newv, v))) 
+            {
+                System.out.println("At vertex: "+v+" accepted: "+newv);
                 return true;
             }
+            System.out.println("At vertex: "+v+" rejected: "+newv);
         }
         return false;
     }
+
+    private static class CmpVertex implements Comparator<Vertex>
+    {
+        public int compare(Vertex v1, Vertex v2)
+        {
+                    return v1.getId() - v2.getId();
+        }
+    }
 }
+
