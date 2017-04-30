@@ -1,0 +1,71 @@
+%--------------------------------------------------------------
+% Template author: Ben Montgomery
+% Current revision: 1/23/2017
+%--------------------------------------------------------------
+
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath, amsthm, listings, amssymb}
+\usepackage{float, mathtools}
+\usepackage{array,multirow,graphicx}
+
+ % ----------New special chars of computer scientists----------
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor} 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+ 
+ % --------------New problem-solving enviroments--------------
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+% --------------------------------------------------------------
+\begin{document}
+\title{Program 1 --- COS 485}
+\author{Samuel Barton \and Ben Montgomery \and Tyler Nelson}
+\date{May 1, 2017}
+ 
+\maketitle
+\section{Algorithm Overview}
+This ``algorithm'' is, sadly, not an algorithm but a heuristic used to get close estimates to best-known solutions for the Steiner Tree problem. It works on the principal of using Dijkstra's shortest paths algorithm
+
+\section{Algorithm Analysis}
+Let us define a system of costs and variables as the following:
+\begin{enumerate}
+    \item Let us assign a cost of $1$ to basic mathematical operations, individual Boolean statements, if statements, array accesses, and variable assignments.
+    \item Let datastructure (Arrays, HashMaps, Priority Queues...) initialization have a cost equal to the number of elements it is initially given the capacity for.
+    \item Let us have $t$ target nodes in the Steiner tree.
+    \item Let us have $v$ vertices in the graph.
+    \item Let us have $e$ edges in the graph.
+    \item Let $\Omega$ be Chitlin's Constant, the p
+    \item Let a selected shortest path from Dijkstra's Shortest Paths algorithm have a length of $d$.
+\end{enumerate}
+
+\textbf{steinerTree:}
+\begin{flalign*}
+    1 + pathFinder + 1
+\end{flalign*}
+
+\textbf{pathFinder (Base Solution):}
+\begin{flalign*}
+    2 + t + 2 + 4e + v + 4v + v(getShortestPath + 5d) + 1 + 6v + 1 + 6e
+\end{flalign*}
+
+\textbf{pathFinder (Iterative Improvement Setup):}
+\begin{flalign*}
+    2v + 4 + updateNumberOfConnections + 2 + 4e + 2e + 1 + 4e + 6e 
+\end{flalign*}
+
+We must pause to recognize that
+\textbf{pathFinder (Iterative Improvement Part One):}
+\begin{flalign*}
+    x
+\end{flalign*}
+
+\end{document}
