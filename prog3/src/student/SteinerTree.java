@@ -383,7 +383,7 @@ public class SteinerTree
         for(int i = 0; i < g.numEdges(); i++)
             if(edgeMask[i])
                 edgeArray[i].setMark(1);
-        return sum;
+        return bestSolution;
     }
 
     public static int betterTrimmer(int sum, int[] numberOfConnections, int index, Vertex[] v, HashSet<Vertex> targetNodes)
