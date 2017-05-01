@@ -8,6 +8,7 @@
 \usepackage[margin=1in]{geometry} 
 \usepackage{amsthm, listings, amssymb}
 \usepackage{float, mathtools}
+\usepackage{breqn}
 \usepackage{array,multirow,graphicx}
 
  % ----------New special chars of computer scientists----------
@@ -64,46 +65,60 @@ Let us define a system of costs and variables as the following:
 
 We must pause to recognize that in theory, the iterative improvement could run for an 
 exceedingly long amount of time. The probability of this happening is incredibly slim,
-and can be demonstrated by the Monte Carlo method; howeever, it is worth recognizing 
+and can be demonstrated by the Monte Carlo method; however, it is worth recognizing 
 that in the worst case, this program could spend its time improving its solution by
 some number bounded by $\lambda = e^e$.
 \\
-\textbf{pathFinder (Iterative Improvement Part One):}
-%\begin{equation*}
-\begin{multline}
+\textbf{pathFinder (Iterative Improvement):}
+\begin{dmath*}
     \lambda 
         \left(
-            2 + 
-            (v - t)
+            2 +
+            (v - t) \\
             \left( 
                 5 + 
                 3(v - 1) + 
                 3 +
-                (t - 1)  
-                \left( 
+                (t - 1) \\
+                \left(
                     1 + 
                     getShortestPath +
                     1 +
                     getPath +
-                    3 (v - 1)
-                \right) +
+                    3 (v - 1) 
+                \right) \\+
                 2 +
                 7e +
                 2 +
-                v 
+                v\\ +
                 \left(
                     2 + 
                     4(v - 1) +
                     3
-                \right) + 
+                \right) \\ + 
                 v (2 + 1 + betterTrimmer) +
                 3 +
+                \left(
+                    2 + v \\ +
+                    (v-1)(4) 
+                \right)
             \right) 
-        \right)
-\end{multline}
-%\end{equation*}
-\end{document}
+        \right) + 6e
+\end{dmath*}
 
+\textbf{getShortestPath:}
+\begin{dmath*}
+    1 + shortestPaths + 1 + 
+    (6v + (t-1))
+    + n \lg n + 1\\
+    + (t-1)(7 + hasCycle + replacePath) + 1 + n \lg n + 2
+\end{dmath*}
+
+\textbf{getPath:}
+\begin{dmath*}
+   
+\end{dmath*}
+\end{document}
 
 
 
