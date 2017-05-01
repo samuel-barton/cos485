@@ -44,7 +44,6 @@ Let us define a system of costs and variables as the following:
     \item Let us have $t$ target nodes in the Steiner tree.
     \item Let us have $v$ vertices in the graph.
     \item Let us have $e$ edges in the graph.
-    \item Let $\Omega$ be Chitlin's Constant, the p
     \item Let a selected shortest path from Dijkstra's Shortest Paths algorithm have a length of $d$.
 \end{enumerate}
 
@@ -58,6 +57,12 @@ Let us define a system of costs and variables as the following:
     2 + t + 2 + 4e + v + 4v + v(getShortestPath + 5d) + 1 + 6v + 1 + 6e
 \end{flalign*}
 
+Reduces to
+\begin{dmath*}
+2v^4t - 2v^4 + 14v^3t - 6v^3 + 3v^2\lg(v - 1) + 7v^2t + 14v^2 + 7vt + 
+2vt\lg(t - 1) - 2v\lg(t - 1) 
+ + 5dv + 14v + 10e + t + 6  
+\end{dmath*}
 \textbf{pathFinder (Iterative Improvement Setup):}
 \begin{flalign*}
     2v + 4 + updateNumberOfConnections + 2 + 4e + 2e + 1 + 4e + 6e 
@@ -69,17 +74,18 @@ and can be demonstrated by the Monte Carlo method; however, it is worth recogniz
 that in the worst case, this program could spend its time improving its solution by
 some number bounded by $\lambda = e^e$.
 \\
+\\
 \textbf{pathFinder (Iterative Improvement):}
 \begin{dmath*}
     \lambda 
-        \left(
-            2 +
-            (v - t) \\
-            \left( 
+        \left\{
+            2 +\\
+            (v - t)
+            \left[ 
                 5 + 
                 3(v - 1) + 
-                3 +
-                (t - 1) \\
+                3 + 
+                (t - 1)
                 \left(
                     1 + 
                     getShortestPath +
@@ -90,7 +96,7 @@ some number bounded by $\lambda = e^e$.
                 2 +
                 7e +
                 2 +
-                v\\ +
+                v +
                 \left(
                     2 + 
                     4(v - 1) +
@@ -99,55 +105,144 @@ some number bounded by $\lambda = e^e$.
                 v (2 + 1 + betterTrimmer) +
                 3 +
                 \left(
-                    2 + v \\ +
-                    (v-1)(4) 
+                    2 + v  +
+                    4(v-1) 
                 \right)
-            \right) 
-        \right) + 6e
+            \right] 
+        \right\} + 6e
+\end{dmath*}
+
+Reduces to
+\begin{dmath*}
+\lambda
+\left[
+2 + 2v^4t^2 - 4v^4t + 6v^4 - 2v^3t^3 + 4v^3t^2 -19v^3t + 6v^2t^2 + 11v^3 + 
+3v^2t\lg(v - 1) - 3v^2\lg(v - 1) + 7v^2t + 2vt^2\lg(t - 1) - 11vt^2 + 
+3vt\lg(t - 1) + 3vt^2\lg(v - 1) + 4vt\lg(t - 1) + 8tv + 2v\lg(t - 1) - 7t^3 -
+2t^3\lg(t - 1) + 5v + 4t^2\lg(t - 1) - 2t\lg(t - 1) - 5t + 7e
+\right] + 6e
 \end{dmath*}
 
 \textbf{getShortestPath:}
 \begin{dmath*}
     1 + shortestPaths + 1 + 
     (6v + (t-1))
-    + n \lg n + 1\\
-    + (t-1)(7 + hasCycle + replacePath) + 1 + n \lg n + 2
+    + (t - 1) \lg (t - 1) + 1\\
+    + (t-1)(7 + hasCycle + replacePath) + 1 + (t - 1) \lg (t - 1) + 2
 \end{dmath*}
+Reduces to
+$$
+2v^3t - 2v^3 + 14v^2t - 6v^2 + 3v\lg(v - 1) + 7vt + 14v + 7t + 2t\lg(t - 1) -
+2\lg(t - 1) + 3
+$$
 
 \textbf{getPath:}
 \begin{dmath*}
-   
+3 + 
+(v - 1)
+\left[
+    3 + 5(v - 1) + 1
+\right]
 \end{dmath*}
+
+Reduces to
+$$
+5v^2 - 6v + 4
+$$
+
+\textbf{hasCycle:}
+\begin{dmath*}
+1 + innerHasCycle + 1 + 3v
+\end{dmath*}
+
+Reduces to
+$$
+2v^3 - 13v^2 + 15v + 2
+$$
+
+\textbf{innerHasCycle:}
+\begin{dmath*}
+v
+\left[1 + (v - 1)
+    \left(
+        2 + vertexInPath + 11
+    \right)
+\right]
+\end{dmath*}
+
+Reduces to
+$$
+2v^3 - 13v^2 + 12v
+$$
+\textbf{vertexInPath:}
+\begin{dmath*}
+2(v - 1)
+\end{dmath*}
+
+Reduces to
+$$
+2v - 2
+$$
+\textbf{replacePath:}
+\begin{dmath*}
+2 + (v - 1)
+\left[
+    3 + 5(v - 1) + 7
+\right]
+\end{dmath*}
+
+Reduces to
+$$
+5v^2 - 3
+$$
+\textbf{zeroPath:}
+\begin{dmath*}
+2 + 
+(v - 1)
+\left[
+    3 + 6(v - 1)
+\right]
+\end{dmath*}
+
+Reduces to
+$$
+6v^2 - 9v + 5
+$$
+\textbf{betterTrimmer:}
+\begin{dmath*}
+(v - 1)
+\left[
+    8 + 2(v - 1) + 8
+\right] 
+\end{dmath*}
+
+Reduces to
+$$
+2v^2 + 12v - 14
+$$
+\textbf{shortestPaths:}
+\begin{dmath*}
+5 + v
+\left[
+    6 + 8(v - 1) + 3 + 3\lg(v - 1)
+\right]
+\end{dmath*}
+
+Reduces to
+$$
+8v^2 + 3v\lg(v - 1) + v + 5
+$$
+%
+\textbf{updateNumberOfConnections:}
+\begin{dmath*}
+2 + v
+\left[
+3 + 4(v - 1) + 5
+\right]
+\end{dmath*}
+
+Reduces to
+$$
+4v^2 + 4v + 2
+$$
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
