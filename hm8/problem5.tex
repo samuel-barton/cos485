@@ -1,1 +1,64 @@
 \section*{Problem 5}
+
+In this problem we are given the following situation and asked to find the 
+minimun number of afternoons required to solve it.
+
+\begin{quote}
+    A list of 17 committees with 200 unique members where no member can be in more
+    than 5 committees. Each committee meeting takes one afternoon to complete.
+\end{quote}
+%
+This problem is most similar to the graph coloring problem. We cast this problem
+into the graph coloring problem in the following way:
+\\
+\\
+First, each job becomes a vertex in the graph. Each edge in the graph represents a
+conflicting committee, namely a pair of committees which share a member. In order 
+to determine whether a pair of committees conflict we taake a linear pass through 
+their respective membership lists and look for a common member.
+\\
+\\
+With tihs graph build we simply run the graph coloring algorithm and return the 
+minimun number of colors needed to color the graph. This number is the number of 
+afternoons needed to hold all of the meetings with no conflicts.
+\begin{center}
+To demonstrate this algorithm we consider the following example: 
+\\\hfill
+\\
+    \begin{tabular}{| c | c  c  c| c c | }
+        \hline
+        \textbf{Committee} & \multicolumn{3}{l|}{\textbf{Members}} & 
+        \multicolumn{2}{l|}{\textbf{Conflicts With}} \\
+        \hline
+        W & A & C & & X & Y \\
+        \hline
+        X & C & D & & W & Z \\
+        \hline
+        Y & A & B &E& W & Z \\
+        \hline
+        Z & B & D & & X & Y \\
+        \hline
+    \end{tabular}
+\end{center}
+%
+Where we note that we are given that the optimal solution takes two afternoons. 
+Below we present the graph representing these committees and the conflicts between
+them.
+\\
+\begin{center}
+    \begin{tikzpicture}
+       \node[red node] (1) {W};
+       \node[green node] (2) [right = 2cm of 1]{X};
+       \node[green node] (3) [below = 2cm of 2]{Y};
+       \node[red node] (4) [below = 2cm of 1]{Z};
+
+       \draw (1) -- (2) 
+             (1) -- (3)
+             (2) -- (4)
+             (3) -- (4);
+    \end{tikzpicture}
+\end{center}
+%
+Note that this is aa valid coloring for the graph, and that there are two colors
+needed to color this graph which by our statement of the algorithm means that we
+can schedule all of the meetings in two afternoons with no conflicting meetings.

@@ -29,7 +29,7 @@
 
 % --------------------------------------------------------------
 \begin{document}
-\title{Program 1 --- COS 485}
+\title{Program 3 --- COS 485}
 \author{Samuel Barton \and Ben Montgomery \and Tyler Nelson}
 \date{May 1, 2017}
  
@@ -44,10 +44,14 @@ have connected all target nodes in a non-cyclic manner.
 \\
 \\
 With this base solution, we then run an iterative improvement algorithm which 
-forbids the use of any edges in the current solution, and then reruns the base
+forbids the use of an edge in the current solution, and then reruns the base
 algorithm. If we improve the cost, then keep the new solution. Repeat until
 we no longer improve our solution.
-
+\\
+\\
+At the end of this document is an additional improvement worked by Tyler last
+night which we ran out of time to analyze. This final improvement takes a very
+long time.
 \section{Algorithm Analysis}
 
 Let us define a system of costs and variables as the following:

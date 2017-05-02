@@ -4,12 +4,11 @@ We are given a problem as follows, and asked to transform it into a known proble
 \begin{quote}
 ``Given a list of n positive values, divide them into 2 sublists whose sums are as equal as possible.''
 \end{quote}
-This problem is most similar to bin packing. 
+This problem is most similar to subset sum.
 \\
 \\
-We set the number of bins $B$ to 2, and limit the capacities of each bin to 
-$\frac{S}{2}$ where $S$ is the sum of all of the $n$ positive values. Then the
-bin packing algorithm will run until the two bins are packed such that the
-sums of each bin are as close to $\frac{S}{2}$ as possible. Also, if the 
-capcacity forces bin packing to use a third bin, then up the capcity of the 
-two bins and try again.
+Let $s$ be the sum of the n postive values, and $d_1,d_2$ be the resultant sizes of our subsets.
+Set the sum limit of our subset to be $\frac{S}{2}$. Execute the subset sum algorithm to fill our 
+subset as close to $\frac{S}{2}$ as possible. Put all of the remaining items into the second subset. 
+Since $d_2 \ge \frac{S}{2}$ and $d_1 \le \frac{S}{2}$ and we attempt to make $d_1$ as close to 
+$\frac{S}{2}$ as possible we minimize the difference between $d_1$ and $d_2$.
