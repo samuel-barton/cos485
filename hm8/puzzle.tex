@@ -2,7 +2,7 @@
 
 In this problem we are asked to find a seating arrangement for 150 people at a 
 round table such that no two people who dislike one another are forced to sit
-adjacet to one another.
+adjacent to one another.
 \\
 \\
 For each guest, we know the list of people they quarrel with. Thus, we can 
@@ -17,6 +17,6 @@ With this graph constructed, we then apply the algorithm for the
 each person is sitting next to someone they do not quarrel with.
 \\
 \\
-Note: it is possible that there is no Hamiltonian Circuit for the graph, in
-that case there is no seating arrangement where no two people who quarrel will
-sit adjacent to one another. 
+Note: it is possible to construct a graph using these rules for which there is
+no Hamiltonian Circuit. This occurs when there is no ordering of guests such
+that only non-quarreling guests sit next to each other.

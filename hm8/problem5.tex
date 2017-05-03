@@ -14,11 +14,11 @@ into the graph coloring problem in the following way:
 \\
 First, each job becomes a vertex in the graph. Each edge in the graph represents a
 conflicting committee, namely a pair of committees which share a member. In order 
-to determine whether a pair of committees conflict we taake a linear pass through 
+to determine whether a pair of committees conflict we take a linear pass through 
 their respective membership lists and look for a common member.
 \\
 \\
-With tihs graph build we simply run the graph coloring algorithm and return the 
+With this graph built we simply run the graph coloring algorithm and return the 
 minimun number of colors needed to color the graph. This number is the number of 
 afternoons needed to hold all of the meetings with no conflicts.
 \begin{center}
@@ -59,6 +59,6 @@ them.
     \end{tikzpicture}
 \end{center}
 %
-Note that this is aa valid coloring for the graph, and that there are two colors
-needed to color this graph which by our statement of the algorithm means that we
+Note that this is a valid coloring for the graph, and that there are two colors
+needed to color this graph. This means that, by our algorithm statement, we 
 can schedule all of the meetings in two afternoons with no conflicting meetings.

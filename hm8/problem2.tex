@@ -1,22 +1,24 @@
 \section*{Problem 2}
 
 We are given two problems $A$, $B$, such that $A$ can be converted to $B$ in 
-$t_n \in \Theta(n^a)$, a polynomial quantity, meaning $A \propto B$ if the solution to $B$ has 
-$t_n \in \Theta(n^b)$, a polynomial quantity. To bound the complexity of this 
-solution, we will refer to the below proof:
+$t_n \in \Theta(n^a) \in P$ where $P$ is the set of all polynomials. Thus 
+$A \propto B$. We also note that $B$ is solvable in $t_n \in \Theta(n^b) \in P$.
+To bound the complexity of this solution, consider the following:
 
 \begin{proof}
 Suppose we have an instance of problem $A$ that is of size $n$. Because at 
 most there are $\Theta(n^a)$ steps in the transformation algorithm, and at 
 worst the algorithm outputs a symbol at each step, the size of the instance 
 of $B$ produced by the transformation is at most a quantity $s$ such that 
-$s \in \Theta(n^a)$. When that instance is the input to the algorithm for $B$, 
-this means there are at most $\Theta\left((n^a)^b\right)$ steps. Therefore, 
+$s \in \Theta(n^a)$. 
+When $s$ is the input to the algorithm for $B$, there are at most 
+$\Theta\left(s^b\right) = \Theta\left((n^a)^b\right) = 
+\Theta\left(n^{ab}\right)$ steps. Therefore, 
 the maximum number of steps required to transform the instance of problem $A$ 
 to an instance of problem $B$ and then solve problem $B$ to get the correct 
 answer for problem $A$ is at most
 $$
-\Theta(n^a) + \Theta\left((n^a)^b\right)
+\Theta(n^a) + \Theta\left(n^{ab}\right)
 $$
 which is a polynomial in $n$.
 \end{proof}

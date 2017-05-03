@@ -1,22 +1,59 @@
 \section*{Problem 1}
 
-In this problem, we are asked to classify the problem of finding the $n$th Fibonacci term, given the following categories:
+In this problem, we are asked to classify the problem of finding the $n$th 
+Fibonacci term, given the following categories:
 \begin{enumerate}
     \item Problems Solvable in Polynomial Time
     \item Problems Proven to be Intractable
-    \item Problems Not Proven to be Intractable, but Lack Existing Polynomial Solutions
+    \item Problems Not Proven to be Intractable, but Lack Existing Polynomial 
+          Solutions
 \end{enumerate}
 %
-As noted in section 1.3 of our text, when we use a binary representation for the input problem size, a standard representation used when evaluating if a problem can be solved in polynomial time. This means the input size is $\floor{\lg n} + 1$.
+In order to solve this problem we must define what the Fibonacci sequence is:
+
+\begin{quote}
+The Fibonacci sequence, which is discussed in Subsection 1.2.2 is 
+defined as follows: 
+%
+\begin{align*}
+t_n &= t_{n-1} + t_{n-2} \\
+t_0 &= 0 \\
+t_1 &= 1
+\end{align*}
+This definition gives us the recurrence equation for calculating the $n$th 
+term in the Fibonacci sequence, regardless of implementation.
+\end{quote}
+%
+In Appendix B, we are given the solution to this recurrence equation. It is 
+presented below. 
+%
+$$
+t_n = 
+    \dfrac{\left[\dfrac{1 + \sqrt{5}}{2}\right]^n - 
+           \left[\dfrac{1 - \sqrt{5}}{2}\right]^n}{\sqrt{5}}
+$$
+This is clearly not a polynomial. Also, this recurrence equation gives us a 
+representation of the amount of output produced by this algorithm and not the
+time complexity. 
 \\
 \\
-The algorithm for finding the Nth term in the Fibbonacci sequnce is linear time
-in the magnitude of the nth term; however, by the rationale given in secion 9.2
-the algorithm is exponential in the ``input size'' defined as the number of 
-characters needed to store the input.
+Even though we subtract one exponential from another, as $n \rightarrow \infty$
+the second term approaches zero as $\frac{1 - \sqrt{5}}{2} < 1$. Thus we
+are left with a single exponential term. This means that the output produced
+is non-polynomial in $n$.
 \\
 \\
-This algorithm cannot be intractable as it does not produce a nonpolynomial 
-amount of output, or fall into the same category as the 
-\textit{Halting Problem}. Thus we can assert that the problem is neither proven
-to be intractable, but polynomial-time solutions have not been found.
+The size of the input to this problem is not $n$, but rather is $2^d$ if we 
+assume a binary representation scheme for numbers. $d$ is the number of binary
+digits, which is defined by the text as the input size. Solving $n = 2^d$ for 
+$d$ gives us $d = \floor{\lg(n)} + 1$. Thus our equation for the amount of 
+output produced to represent the $n$th term in the Fibonacci sequence is 
+$$
+t_n = 
+    \dfrac{\left[\dfrac{1 + \sqrt{5}}{2}\right]^{2^d} - 
+           \left[\dfrac{1 - \sqrt{5}}{2}\right]^{2^d}}{\sqrt{5}}
+$$
+Thus the amount of output produced in representing the $n$th term in the 
+Fibonacci sequence is non-polynomial with respect to $d$, where $d$ is the input 
+size. Thus this problem is inherently intractable by definition as it produces
+a non-polynomial amount of output.

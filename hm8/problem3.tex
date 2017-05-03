@@ -2,23 +2,35 @@
 
 It is stated that both problem $A$ and problem $B$ are decision problems such that $A \propto B$. It is also stated that $A$ is an NP-complete problem. We are then asked if $B$ is also $NP$-Complete.
 \\
-Let us define NP-hard and Turing Reducable
-
+\\
+Let us define $NP$-hard and $NP$-complete
+\\
 \begin{quote}
-    If a problem $A$ can be solved in polynomial time useing a hypothetical 
-    polynomial-time algorithm for problem $B$, then problem $A$ is 
-    polynomial-time Turing Reducable to problem $B$. We denote this
-    $A \propto_T B$.
+    A problem is $NP$-hard if there is an $NP$-complete problem which is 
+    Turing reducable to it. If an $NP$-complete problem is polynomial-time
+    many-one reducable to a problem, then it is also Turing reducable to that
+    problem.
 \end{quote}
-
 \begin{quote}
-    A problem $B$ is called $NP$-hard if, for some NP-complete problem $A$,
-    $A \propto_T B$.
+    A problem is $NP$-complete if it is in the set $NP$ and is $NP$-hard.
 \end{quote}
+\begin{quote}
+    \textit{Lemma}:
 
-Problem $B$ is either intractable, in $P$, or in $NP$. If $B$ is intractable, 
-then $B$ is not in NP. If $B$ is in NP, then B is an $NP$-hard problem by 
-definition. If, $B$ is in $P$, then $P = NP$ and $B$ is still an $NP$-hard
-problem by definition.
-
-Thus $B$ is an $NP$-hard problem.
+    If any $NP$-complete problem reduces to some problem, then every 
+    $NP$-complete problem can be reduced to that problem.
+\end{quote}
+%
+We consider the following two cases: 
+\begin{enumerate}
+    \item If $B$ is verifiable in polynomial time, then either $B \in P$ or 
+          $B \in NP$, and since $P \in NP$ it must be true that $B \in NP$, 
+          and so $B$ is $NP$-complete as $B \in NP$ and $B$ is $NP$-hard.
+    \item If $B$ is not verifiable in polynomial time, then $B$ is intractable.
+          We know that $B$ is $NP$-hard; however, we cannot determine if it is 
+          also $NP$-complete as doing so would require solving the problem of 
+          determining whether $P = NP$.
+\end{enumerate}
+%
+Thus, we do not have enough information about $B$ to give a definitive answer
+as to whether or not $B$ is $NP$-complete.
