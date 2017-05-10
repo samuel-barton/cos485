@@ -1,5 +1,6 @@
 \documentclass[aip, jmp, amsmath,amssymb, reprint]{revtex4-1}
 \usepackage{amsfonts, amssymb, amsthm, pgfplots, array}
+\usepackage[thinlines]{easytable}
 \usepackage{longtable}
 \usepackage{amsmath, mathtools, listings}
 \usepackage{graphicx, tikz, }% Include figure files
@@ -40,7 +41,8 @@
     \binom{n}{k} &= \binom{n - 1}{k - 1} + \binom{n - 1}{k}\\
     \lg x &= k\text{, where } 2^k = x\\
     \lg(a^b+ &= b \lg a\\
-    a^{\lg b} &= b^{\lg a}
+    a^{\lg b} &= b^{\lg a}\\
+    \lg(n!) &= n \lg (n) 
 \end{align*}
 
 \section{Time Complexity}
@@ -316,4 +318,220 @@ Note that the book explicitly states that backtracking is a modification of \tex
     \textbf{BFS} & BFS is also a  $\Theta(V + E)$ traversal of any graph, using a dequeue.\\
     \textbf{Branch-and-Bound} & Just like Backtracking, with the modification that we visit the children of the current node only if its bound (an estimate guessing what will follow the current node) indicates that that path will lead to a better solution than the current best solution. That's the only effective difference. This is a \textbf{best}-first search.
 \end{longtable}
+
+\section{Monte Carlo}
+
+Determines the number of nodes on a search tree. Start at a random staring point and solve the problem as we normally would. Repeat until 
+we have either exhausted our search space, or have found a solution.
+
+\begin{center}
+\begin{TAB}(e){|c|c|c|c|c|c|c|c|c|}{|c|c|c|c|c|c|c|c|c|}
+	$\cdot$ & $\cdot$ & \textcolor{red}{$\mathrm{Q}_1$} & $\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ \\
+	$\cdot$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{red}{\mathrm{x}_1}$ & $\cdot$ & $\cdot$ & $\cdot$ & $\cdot$ & \textcolor{blue}{$\mathrm{Q}_2$} \\
+	$\textcolor{red}{\mathrm{x}_1}$ & \textcolor{green}{$\mathrm{Q}_3$} & $\textcolor{red}{\mathrm{x}_1}$ & $\cdot$ & $\textcolor{red}{\mathrm{x}_1}$ & $\cdot$ & $\cdot$ & $\textcolor{blue}{\mathrm{x}_2}$ & $\textcolor{blue}{\mathrm{x}_2}$ \\
+	$\textcolor{green}{\mathrm{x}_3}$ & $\textcolor{green}{\mathrm{x}_3}$ & $\textcolor{red}{\mathrm{x}_1}$ & $\cdot$ & $\cdot$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{blue}{\mathrm{x}_2}$ &  \textcolor{yellow}{$\mathrm{Q}_4$} & $\textcolor{blue}{\mathrm{x}_2}$ \\
+	\textcolor{cyan}{$\mathrm{Q}_5$} & $\textcolor{green}{\mathrm{x}_3}$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{green}{\mathrm{x}_3}$ & $\cdot$ & $\textcolor{blue}{\mathrm{x}_2}$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{yellow}{\mathrm{x}_4}$ & $\textcolor{blue}{\mathrm{x}_2}$ \\
+	$\textcolor{cyan}{\mathrm{x}_5}$ & $\textcolor{green}{\mathrm{x}_3}$ & $\textcolor{red}{\mathrm{x}_1}$ & \textcolor{teal}{$\mathrm{Q}_6$} & $\textcolor{blue}{\mathrm{x}_2}$ & $\textcolor{yellow}{\mathrm{x}_4}$ & $\cdot$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{blue}{\mathrm{x}_2}$ \\
+	$\textcolor{cyan}{\mathrm{x}_5}$ & $\textcolor{green}{\mathrm{x}_3}$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{blue}{\mathrm{x}_2}$ & $\textcolor{yellow}{\mathrm{x}_4}$ & $\textcolor{green}{\mathrm{x}_3}$ & \textcolor{magenta}{$\mathrm{Q}_7$} & $\textcolor{yellow}{\mathrm{x}_4}$ & $\textcolor{red}{\mathrm{x}_1}$ \\
+	$\textcolor{cyan}{\mathrm{x}_5}$ & $\textcolor{green}{\mathrm{x}_3}$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{yellow}{\mathrm{x}_4}$ & \textcolor{olive}{$\mathrm{Q}_8$} & $\textcolor{teal}{\mathrm{x}_6}$ & $\textcolor{green}{\mathrm{x}_3}$ & $\textcolor{yellow}{\mathrm{x}_4}$ & $\textcolor{blue}{\mathrm{x}_2}$ \\
+	$\textcolor{cyan}{\mathrm{x}_5}$ & $\textcolor{blue}{\mathrm{x}_2}$ & $\textcolor{red}{\mathrm{x}_1}$ & $\textcolor{teal}{\mathrm{x}_6}$ & $\textcolor{cyan}{\mathrm{x}_5}$ & $\textcolor{olive}{\mathrm{x}_8}$ & $\textcolor{teal}{\mathrm{x}_6}$ & $\textcolor{green}{\mathrm{x}_3}$ & $\textcolor{blue}{\mathrm{x}_2}$ \\
+\end{TAB}
+\end{center}
+
+\begin{center}
+\begin{tabular}{l | c | l}
+	\textbf{Row \#} & \textbf{Choices} & \textbf{Cost} \\
+	1 & 9 & 9 \\
+	2 & 6 & $9 \cdot 6$ \\
+	3 & 4 & $9 \cdot 6 \cdot 4$ \\
+	4 & 3 & $9 \cdot 6 \cdot 4 \cdot 3$ \\
+	5 & 2 & $9 \cdot 6 \cdot 4 \cdot 3 \cdot 2$ \\
+	6 & 2 & $9 \cdot 6 \cdot 4 \cdot 3 \cdot 2 \cdot 2$ \\
+	7 & 1 & $9 \cdot 6 \cdot 4 \cdot 3 \cdot 2 \cdot 2 \cdot 1$ \\
+	8 & 1 & $9 \cdot 6 \cdot 4 \cdot 3 \cdot 2 \cdot 2 \cdot 1 \cdot 1$ \\
+	9 & 0 & 0 \\
+	\hline
+	\textbf{Total} & & \textbf{9999}
+\end{tabular}
+\end{center}
+
+\section{Computational Complexity}
+
+There are three categories of algorithms
+\begin{longtable}{p{2.2cm} p{6cm} }
+    \textbf{P} & Problems with known polynomial-time solutions \\
+    \textbf{NP} & Problems whose solutions can be verified in polynomial time (VP) \\
+    \textbf{Intractable} & Problems proven to be unsolvable in polynomial time. This can happen in two waays. Either we produce a
+                           non-polynomial amount of output or we can prove that the problem takes exponential time to solve. \\
+\end{longtable}
+
+In the set of problems designated \textbf{NP} there are four subcategories
+\begin{longtable}{p{2.2cm} p{6cm} }
+    \textbf{NP-Complete} & A problem $B$ is called $NP$-complete if both of the following are true. 
+                            \begin{enumerate}
+                                \item $B \in NP$ 
+                                \item For every other problem $A \in NP$, $A \propto B$.
+                            \end{enumerate} \\
+    \textbf{NP-Easy} & A problem $A$ is called $NP$-easy if, for some problem $B \in NP$ $A \propto_T B$. \\
+    \textbf{NP-Hard} & A problem $B$ is called $NP$-hard if, for some $NP$-complete problem $A$. $A \propto_T B$. \\
+    \textbf{NP-Equivalent} & A problem is called $NP$-equivalent if it is both $NP$-hard and $NP$-easy. \\
+\end{longtable}
+
+In the above we use the operations $\propto$ and $\propto_T$. They are defined below:
+\begin{longtable}{p{2.2cm} p{6cm} }
+    \textbf{$\propto$} & If there exists a polynomial-time transformation algorithm from decision problem $A$, to decision problem $B$, then
+                         problem $A$ is polynomiaal-time many-one reducable to problem $B$. This is $A \propto B$. \\
+    \textbf{$\propto_T$} & If a problem $A$ can be solved in polynomial-time with a hypothetical polynomial-time algorithm for problem $B$,
+                           then problem $A$ is polynomial-time Turing reducable to problem $B$. This is $A \propto_T B$. \\
+\end{longtable}
+
+Examples of Problem Transforms:
+
+\begin{longtable}{p{2.2cm} p{6cm} }
+    $P_x \propto P_{\textrm{easy}}$  & $P_x$ is easy \\
+    $P_y \propto P_{\textrm{hard}}$  & $P_y$ is unknown \\
+    $P_{\textrm{hard}} \propto P_z$  & $P_z$ is hard \\
+    $P_{\textrm{easy}} \propto P_a$  & $P_a$ is unknown \\
+    $P_1 \propto P_2$ \\ and $P_2 \propto P_1$  & $P_1$ and $P_2$ are both easy or both hard. \\\\
+    $P_h,\cdots, P_k$ \\  $\propto P_\pi$  & If $P_\pi$ is hard, then the others are unknown. If $P_\pi$ is easy, then they all are easy.
+                                                If any of $ P_h,\, \cdots , \, P_k$ is hard, then $P_\pi$ is hard. \\
+
+\end{longtable}
+
+\section{NP-complete Problems}
+
+There are a famous set of problems which we have discussed in class for which Boothe is fairly sure there is no polynomial-time solution.
+\begin{longtable}{p{2.2cm} p{6cm} }
+    \textbf{Bin Packing} & Given a set of numbers, how do you pack them into the minimum number of bins with a specified capacity. \\
+    \textbf{Subset Sum} & Given a set of numbers, using only one bin, how can you pack the bin as close to capacity as possible without 
+                          overflow \\
+    \textbf{0-1 Knapsack} & What is the maximum value you can fit in a pack with a specified weight-limit \\
+    \textbf{Traveling Salesmen} & Find the shortest path through a weighted graph while visiting all of the nodes. \\\\
+    \textbf{Hamiltonian Circuit} & Find a complete tour of a graph. \\
+    \textbf{Graph Coloring} & Color a graph such that no two adjacent nodes have the same color with the fewest possible colors. \\
+    \textbf{Max Clique} & What is the largest set of verticies all directly connected to one another. \\
+    \textbf{Vertex Cover} & Find the smallest set of verticies such that every edge in the graph is attached to a vertex in that set. \\
+    \textbf{Satisfiability} & Evaluate if a given statement of boolean logic can ever be true. \\
+    \textbf{N-Queens} & Find a placement of $N$ queens on an $N\times N$ board so that no queen threatens another queen. \\
+\end{longtable}
+
+\section{Problem Size Expansion}
+
+In order to solve this problem we must define what the Fibonacci sequence is:
+
+\begin{quote}
+The Fibonacci sequence, which is discussed in Subsection 1.2.2 is 
+defined as follows: 
+%
+\begin{align*}
+t_n &= t_{n-1} + t_{n-2} \\
+t_0 &= 0 \\
+t_1 &= 1
+\end{align*}
+This definition gives us the recurrence equation for calculating the $n$th 
+term in the Fibonacci sequence, regardless of implementation.
+\end{quote}
+%
+$$
+t_n = 
+    \dfrac{\left[\dfrac{1 + \sqrt{5}}{2}\right]^n - 
+           \left[\dfrac{1 - \sqrt{5}}{2}\right]^n}{\sqrt{5}}
+$$
+This is clearly not a polynomial. Also, this recurrence equation gives us a 
+representation of the amount of output produced by this algorithm and not the
+time complexity. 
+\\
+\\
+Even though we subtract one exponential from another, as $n \rightarrow \infty$
+the second term approaches zero as $\frac{1 - \sqrt{5}}{2} < 1$. Thus we
+are left with a single exponential term. This means that the output produced
+is non-polynomial in $n$.
+\\
+\\
+The size of the input to this problem is not $n$, but rather is $2^d$ if we 
+assume a binary representation scheme for numbers. $d$ is the number of binary
+digits, which is defined by the text as the input size. Solving $n = 2^d$ for 
+$d$ gives us $d = \floor{\lg(n)} + 1$. Thus our equation for the amount of 
+output produced to represent the $n$th term in the Fibonacci sequence is 
+$$
+t_n = 
+    \dfrac{\left[\dfrac{1 + \sqrt{5}}{2}\right]^{2^d} - 
+           \left[\dfrac{1 - \sqrt{5}}{2}\right]^{2^d}}{\sqrt{5}}
+$$
+Thus the amount of output produced in representing the $n$th term in the 
+Fibonacci sequence is non-polynomial with respect to $d$, where $d$ is the input 
+size. Thus this problem is inherently intractable by definition as it produces
+a non-polynomial amount of output.
+
+\section{Transformation Complexity Augmentation}
+
+We are given two problems $A$, $B$, such that $A$ can be converted to $B$ in 
+$t_n \in \Theta(n^a) \in P$ where $P$ is the set of all polynomials. Thus 
+$A \propto B$. We also note that $B$ is solvable in $t_n \in \Theta(n^b) \in P$.
+To bound the complexity of this solution, consider the following:
+
+\begin{proof}
+Suppose we have an instance of problem $A$ that is of size $n$. Because at 
+most there are $\Theta(n^a)$ steps in the transformation algorithm, and at 
+worst the algorithm outputs a symbol at each step, the size of the instance 
+of $B$ produced by the transformation is at most a quantity $s$ such that 
+$s \in \Theta(n^a)$. 
+When $s$ is the input to the algorithm for $B$, there are at most 
+$\Theta\left(s^b\right) = \Theta\left((n^a)^b\right) = 
+\Theta\left(n^{ab}\right)$ steps. Therefore, 
+the maximum number of steps required to transform the instance of problem $A$ 
+to an instance of problem $B$ and then solve problem $B$ to get the correct 
+answer for problem $A$ is at most
+$$
+\Theta(n^a) + \Theta\left(n^{ab}\right)
+$$
+which is a polynomial in $n$.
+\end{proof}
 \end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
